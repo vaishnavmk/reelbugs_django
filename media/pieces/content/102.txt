@@ -1,0 +1,4 @@
+<p><br /> <br />up vote1down votefavorite&nbsp;<br />I have a foreach loope where i create x amount of buttons:</p>
+<p>&lt;a data-toggle="modal" data-target="#unlockModal" id="openUnlockModal" data-uid="@user.Uid" class="btn btn-default btn-sm"&gt;test&lt;/a&gt;<br />As you can see id is the same for all of those buttons, and ofcourse if i click on one of them only the first one in the list of those buttons will open the modal.</p>
+<p>$("#openUnlockModal").on("click", function (event) {<br /> var uid = $(this).data("uid");<br /> console.log(uid)<br /> //open my fancyModal here<br /> });<br />The problem i am facing that i want to send an id to the modal which is stored on the button which is actually opening it.</p>
+<p>So how do i send this id from the button to the modal? and how do i get all buttons to work?</p>

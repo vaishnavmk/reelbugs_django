@@ -1,0 +1,92 @@
+{%load static%}
+<!doctype html>
+<html>
+	<head>
+		<!-- Global Site Tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-107438690-1"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments)};
+		  gtag('js', new Date());
+
+		  gtag('config', 'UA-107438690-1');
+		</script>
+
+	
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta property="fb:app_id" content="136378896965897" />
+		
+		{% block extrahead %}
+		{% endblock %}
+
+		<title>{%block title%}{%endblock%}</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+		<link rel="stylesheet" href="{%static 'css/bootstrap_ms.css'%}">
+		<link rel="stylesheet" type="text/css" href="{%static 'css/bass.css'%}">
+		<link rel="stylesheet" type="text/css" href="{%static 'css/auth_app.css'%}">
+		<link rel="stylesheet" type="text/css" href="{%static 'css/port.css'%}">
+		<link rel="stylesheet" type="text/css" href="{%static 'css/notif.css'%}">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+		<link rel="shortcut icon" href="{% static 'images/logo3.png' %}">
+		<link href="https://fonts.googleapis.com/css?family=Josefin+Sans|Josefin+Slab" rel="stylesheet">
+		<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+		<link rel="stylesheet" href="{% static 'css/emojionearea.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'tooltipster/dist/css/tooltipster.bundle.min.css' %}" />
+		<link rel="stylesheet" type="text/css" href="{% static 'tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-shadow.min.css' %}" />
+		<link rel="stylesheet" type="text/css" href="{% static 'easyautocomplete/easy-autocomplete.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'scroll/jquery.mCustomScrollbar.min.css' %}">
+
+
+		<!-- Emoji Data -->
+		<script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+		<script type="text/javascript" src="{% static 'scroll/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+		<script src="{% static 'easyautocomplete/jquery.easy-autocomplete.js' %}"></script>
+		<script src="{% static 'sticky_kit/dist/sticky-kit.min.js' %}"></script>
+		<script src="{% static 'jquery-bar-rating-master/dist/jquery.barrating.min.js' %}"></script>
+
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="{% static 'tooltipster/dist/js/tooltipster.bundle.min.js' %}"></script>
+		<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+		<script src="{% static 'js/infinite.min.js' %}"></script>
+		<script type="text/javascript" src="{%static 'js/sticky-sidebar.js'%}"></script>
+
+		<style>{%block style%}{%endblock%}</style>
+		
+	</head>
+	
+	<body>
+		<!--navbar!-->
+		<div id="custom-bootstrap-menu" class="navbar navbar-default navbar-fixed-top" style="border-bottom: 3px solid #fff; border-left-color: #fff; border-right-color: #fff; border-bottom-color: #eee;" role="navigation">
+				<div class="container-fluid">
+						<div class="navbar-header"><a class="navbar-brand" href="#">
+							<img src="{% static 'images/blogo.png' %}" height="55" width="60" style="position: relative;bottom: 15px; right: 5px;" alt="Blumury Logo"></a><a href="{%url 'index2'%}" style="text-decoration: none;">
+						<span class="blumury" style="color: #fff; position: relative; right: 15px; top:9px; font-family: 'Josefin Slab', sans-serif; font-size: 24px;font-weight: bold;">blumury</span> <span class="blumury" style="color: #fff; position: relative; right: 15px; top:13px; font-family: 'Helvetica'; font-size: 10px;"> &nbsp;Movies, TV & Coffee</span></a>
+								<button style="background: #fff" type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-menubuilder"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+								</button>
+						</div>
+						<div class="collapse navbar-collapse navbar-menubuilder">
+								<ul class="nav navbar-nav navbar-right">
+									<li><a href="{%url 'index2'%}">Home <i class="fa fa-home"></i></a></li>
+									<li><a href="{%url 'about'%}">About<i class="fa fa-beer"></i></a></li>
+									<li><a href="{%url 'signin' %}">Sign In <i class="fa fa-location-arrow"></i></a></li>
+								</ul>
+						</div>
+				</div>
+				<div class="row" style="background: #eee;">
+				<div class="col-xs-12 col-md-8 col-md-offset-2" style="position: relative; background: #eee;">
+							<input type="text" id="main_search" style="" placeholder="Search for any Movie/TV Series" >
+							<i class="fa fa-search" style="position: absolute; top:10px; left: 20px"></i>
+				</div>
+				</div>
+		</div>
+		<!--navbar!-->
+
+		<div style="margin-bottom: 60px;">
+		{%block body%}
+		{%endblock%}
+		</div>
+		{%block js%}
+		{%endblock%}
+	</body>
+</html>

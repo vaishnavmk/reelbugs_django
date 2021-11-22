@@ -1,0 +1,25 @@
+{%extends 'writers_block/base.html'%}
+{%block title%}
+	Write Piece
+{%endblock%}
+{%block body%}
+<div class="erors" style="background: #f4b642; display: none; padding: 5px; border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;">
+            <p style="text-align: center; font-family: Roboto, Arial; color: #fff">You're going to publish a blank page?</p>
+            </div>
+<h3 style="text-align: center; font-family: Space Mono;">Write a Review!</h3>
+<form action="" method="post">
+	{{form.media}}
+	{%csrf_token%}
+	<div class="container top-buffer">
+	<textarea name="content" class="portfolio"></textarea>
+	</div>
+	<div  class="row">
+	<div class="col-xs-12">
+	<button type="submit" class="btn btn-success" style="margin: 0 auto; color: #fff; border-color: #000; display: block;">Go Ahead To Publishing</button>
+	</div>
+	</div>
+</form>
+{%endblock%}
+{%block js%}
+
+{%endblock%}

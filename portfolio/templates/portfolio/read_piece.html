@@ -1,0 +1,107 @@
+{%extends base %}
+{%load static%}
+{%load social_share%}
+
+{% block title %}
+	Blumury | {{piece.title}}
+{% endblock %}
+
+{% block body %}
+	<div class="container com_boss" name="{{piece.id}}">
+		<div class="row">
+			<div class="col-xs-12 col-md-9 col-md-offset-1">
+				<div class="row">
+					<div class="col-md-6 col-md-offset-3 col-sm-12">
+						<h2 class="piece_title">{{piece.title}}</h2>
+						<p class="author_title text-muted">By <a class="text-muted" href="{%url 'profile_view' pk=piece.author.id%}">{{piece.author.username}}</a></p>
+						<div class="pstats" style="display: inline; text-align: center; position: relative;">
+						<div style="display: block; margin-top: 30px;" >
+							<div style="display: inline-block;"> 
+								<i class="fa fa-bar-chart" style="font-size: 20px; color: #9336a3"></i>
+								<span>{{piece.views}}</span>
+							</div>
+							<div class="star" style="display: inline-block; margin-left: 5%">
+								{%if request.user in piece.plikes.all%}
+								<i class="fa fa-star sglow" style="font-size: 20px; color: #9336a3"></i>
+								{%else%}
+								<i class="fa fa-star" style="font-size: 20px; color: #9336a3"></i>
+								{%endif%}
+								<span class="lnum">{{piece.like_count}}</span>
+							</div>
+							<div class="pshare" style="display: inline-block; margin-left: 5%; position: relative;">
+							  <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-bullhorn share-piece" aria-hidden="true" style="color: #9336a3"></i></a>
+							</div>
+							<div class="pshares" style="display: none;">
+							  <ul class="list-inline">
+							      <li style="margin-left: 5px;">{% post_to_gplus piece %}</li>
+							      <li>{% post_to_facebook piece %}</li>
+							      <li style="margin-right: 5px;">{% post_to_twitter piece.get_absolute_url %}</li>
+							  </ul>
+							</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="piece_content top-buffer" style="padding: 0 10px; border-radius: 20px;">
+					{{content|safe}}
+				</div>
+			</div>
+		</div>
+
+		<div class="row" style="margin-top: 50px;" id="{{piece.id}}">
+		<div class="col-xs-12 col-md-9 col-md-offset-1">
+		<h5 class="text-muted com_count" style="margin-left: 2.5%; margin-bottom: 20px;">Comments ({{piece.comments.all.count}})</h5>
+		<form class="pcom_form" method="post" action="{%url 'write_comment'%}">
+		  {%csrf_token%}
+		  <div class="container com_cont">
+		    <div class="row">
+		      <div class="col-xs-12">
+		        <textarea style="position: relative;" class="pcomment_edit" name="rant" id="id_rant" placeholder="Comment"></textarea><br>
+		        <button class="pcom_send_btn" type="submit"><i class="fa fa-pencil fa" style="color: #421c52;font-size: 22px;"></i> </button>
+		      </div>
+		    </div>
+		  </div>
+		</form>
+		</div>
+		</div>
+
+		<div class="row" style="margin-top: 40px;">
+			<div class="col-xs-11 col-md-8 col-md-offset-1 pcom_ls_col">
+				<div class="pcom_list">
+					<table class="table table-borderless table-condensed pcoms" style="margin-bottom: 0px; margin-left: 2%;">
+					<tbody>
+					{%for comment in piece.comments.all%}
+						<tr id="{{comment.id}}">
+            <td class="col-xs-1 pcom_img">
+              <a href="{% url 'profile_view' pk=comment.user.id %}">
+              <img  src="{{comment.user.person.get_thumb}}" style="position: relative; border-radius: 30px;">
+              </a>
+            </td>
+            <td class="col-xs-3 col-md-5 com_tex"  style="vertical-align: middle; position: relative;bottom: 5px;">
+              <p style="white-space: normal;word-break: break-all;word-wrap: break-word;">{{comment.rant}}</p>
+              {% if comment.user == user %}
+                <a href="javascript:void(0)" class="pcom_delete"><i class="fa fa-trash" style="color: #000;"></i></a>
+              {% endif %}
+            </td>
+            <td class="col-xs-1 pcom_upv" style="position: relative;left: 6.5%">
+              <p style="position: relative;">
+              {%if request.user in comment.upvotes.all%}
+              <i class="pups material-icons sglow" style="font-size: 22px; color: #9336a3">change_history</i>
+              {%else%}
+              <i class="pups material-icons" style="font-size: 22px; color: #9336a3">change_history</i>
+              {%endif%}
+              <div class="unum" style="position: relative; bottom: 15px; left:8px">{{comment.upvotes.all.count}}</div></p>
+            </td>             
+          </tr>
+					{%endfor%}
+					</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{%block js%}
+	<script type="text/javascript" src="{% static 'js/piece.js' %}"></script>
+{%endblock%}

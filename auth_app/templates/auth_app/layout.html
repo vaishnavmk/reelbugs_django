@@ -1,0 +1,44 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+<title>{%block title%}{%endblock%}</title>
+
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="{% static 'social_si/css/buttons-si.css' %}">
+
+		<link rel="stylesheet" href="{%static 'css/bootstrap.min.css'%}">
+		<link rel="stylesheet" href="{%static 'css/bootstrap_ms.css'%}">
+		<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="{%static 'css/login.css'%}">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+		<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+		<link rel="shortcut icon" href="{% static 'images/logo3.png' %}">
+		<link href="https://fonts.googl
+		eapis.com/css?family=Just+Another+Hand" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="google-signin-client_id" content="1071736090684-bg06v95e00dml6nr5ej8l95velhkpauk.apps.googleusercontent.com">
+	<style type="text/css">
+		{%block style%}
+		{%endblock%}
+	</style>
+</head>
+<body>
+	<div id="fb-root"></div>
+
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+	<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.10&appId=136378896965897";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+  {%block body%}
+  {%endblock%}
+  {%block js%}
+  {%endblock%}
+</body>
+</html>

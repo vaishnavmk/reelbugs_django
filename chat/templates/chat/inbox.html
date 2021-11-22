@@ -1,0 +1,49 @@
+{% extends 'writers_block/base.html' %}
+{%load humanize%}
+{%load static%}
+
+{%block title%}Blumury | Inbox{%endblock%}
+
+{%block style%}
+		.msg_row{
+			cursor: pointer;
+			cursor: hand;
+		}
+{%endblock%}
+
+{%block body%}
+	<h1 style="text-align: center; font-family: Space Mono, Roboto, Arial">Inbox</h1>
+
+	<div class="container" style="margin-top: 40px;">
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3">
+			<table class="table">
+				{%for chat in chats%}
+				{%if chat.read%}
+				<tr class="msg_row" id="{{chat.id}}">
+				{%else%}
+				<tr class="msg_row" id="{{chat.id}}" style="background: #eee">
+				{%endif%}
+					<td class='col-md-1' style="text-align: center;">
+						<a href="{% url 'profile_view' pk=chat.from_user.id%}"><img src="{{chat.from_user.person.thumbnail.url}}" style="border-radius: 30px;"></a>
+						{{chat.from_user.username}}
+					</td>
+					<td style="vertical-align: middle;">
+						<span class="chat_time" style="font-size: 12px; background: #421c52; color: #fff; padding: 3px; border-radius: 3px;">{{chat.posted_on | naturaltime}}</span>
+						<span style="margin-left: 20px;
+						">{{chat.message |truncatechars:60}}</span>
+					</td>
+				</tr>
+				{%empty%}
+				<tr class="msg_row">
+				<td style="text-align: center;">No messages</td>
+				</tr>
+				{%endfor%}
+			</table>
+		</div>
+	</div>
+	
+{%endblock%}
+{%block js%}
+	<script type="text/javascript" src="{% static 'js/chat.js' %}"></script>
+{%endblock%}

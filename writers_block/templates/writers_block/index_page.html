@@ -1,0 +1,90 @@
+{%load el_pagination_tags%}
+{%paginate block_list%}
+
+{%for block in block_list%}
+  <div class="well" id="{{block.id}}">
+    
+    <div class="block_header">
+      <a href="{%url 'profile_view' pk=block.author.id%}">
+        <img class="block_thumb" src="{{block.author.person.thumbnail.url}}">
+      </a>
+      <div class="block_name">
+        <b>{{block.author.username}}</b> 
+      </div>
+      <span class="block_time">{{ block.posted_on|naturaltime }}</span>
+      {% if block.author == user %}
+        <a href="javascript:void(0);" class="block_del_btn" data-toggle="modal"><i class="fa fa-trash" style="color: #fff; float: right;"></i></a>
+      {% endif %}
+    </div>
+
+
+    <div class="block_body" style="position: relative;">
+      <a href="{%url 'block_view' block_id=block.id%}" class="block_link" style="display: block;text-decoration: none;">
+      <div class="block_content">
+        <p>{{block.content|safe}}</p>                  
+      </div>
+      
+      {% if block.image %}
+        <img class="block_img" src="{{block.image.url}}"><br>
+      {% endif %}
+      </a>
+
+      <div class="like">
+        {%if user in block.likes.all%}
+          <i id="{{block.id}}" class="fa fa-hand-spock-o lglow" aria-hidden="true"></i>&nbsp;{{block.like_count}}
+        {%else%}
+          <i id="{{block.id}}" class="fa fa-hand-spock-o" aria-hidden="true"></i>&nbsp;{{block.like_count}}
+        {%endif%}
+      </div>
+      <div class="comments">
+        <i class="fa fa-coffee" aria-hidden="true"></i>&nbsp;{{block.comments.count}}
+      </div>
+      <div class="bookmark">
+        <a class="dropdown-toggle share-btn" data-toggle="dropdown" href="#"><i class="fa fa-bullhorn" aria-hidden="true"></i></a>&nbsp;&nbsp;0
+      </div>
+      <div class="shares" style="position: absolute; bottom:35px; left: 40%; display: none">
+        <ul class="list-inline" style="background: #d5c3db; opacity:0.9;padding: 5px; border-radius: 10px;">
+            <li style="margin-left: 5px;">{% post_to_gplus block "Post to Google"%}</li>
+            <li>{% post_to_facebook block "Post to Facebook!" %}</li>
+            <li style="margin-right: 5px;">{% post_to_twitter block.content "Post to Twitter!" %}</li>
+        </ul>
+      </div>
+    </div>
+      
+    <div class="comment_box" name="{{block.id}}">
+      <hr style="padding: 7px; margin: 1px;">
+      <form class="com_form" method="post" action="{%url 'write_comment'%}">
+        {%csrf_token%}
+        <div class="container com_cont">
+          <div class="row">
+            <div class="col-xs-12">
+              <textarea style="position: relative;" class="comment_edit" name="rant" id="id_rant" placeholder="Comment"></textarea><br>
+              <button class="com_send_btn" type="submit"><i class="fa fa-pencil fa" style="color: #421c52;font-size: 18px;"></i> </button>
+            </div>
+          </div>
+        </div>
+      </form><br>
+      <div class="coms">
+      {%for comment in block.comments.all%}
+        <div class="container comment" style=" width: inherit; min-height: 40px;">
+          <div class="row" style="overflow: hidden;">
+            <div class="col-xs-1 com_img">
+              <img src="{{comment.user.person.com_thumb.url}}" style="position: relative;">
+            </div>
+            <div class="col-xs-8 com_tex">
+              <p>{{comment.rant}}</p>
+            </div>
+            <div class="col-xs-1">
+              <div class="com_time" style="display: inline-block; padding: 5px; background: #f5f5f5; color: #000; border-radius:10px; height: 25px; width: 25px">
+                <p style="text-align: center; font-size: 8px; vertical-align: middle;">{{comment.posted_on|naturaltime}}</p>
+              </div>
+            </div>  
+          </div>
+          <hr style="padding: 1px; margin: 1px;">
+        </div>
+      {%endfor%}
+      </div>
+    </div>
+  </div>
+ {%endfor%}
+ {%show_more%}

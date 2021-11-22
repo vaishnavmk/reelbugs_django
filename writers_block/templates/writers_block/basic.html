@@ -1,0 +1,174 @@
+{%load static%}
+<!doctype html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+ 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+ 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<meta name="viewport" content="width=device-width" initial-scale="1">
+		
+		{%block head%}
+		{%endblock%}
+
+		<style>
+
+			body {
+				padding-top: 70px;
+				background-color: #fafafa;
+			}
+			@media screen and (max-width: 768px, min-width: 320px) {
+				body {padding-top: 0px;}
+			}
+
+			.navbar-default {background-color: #9366a3;border-bottom-color: #9366a3;}
+			.navbar-nav > li > a {padding-top:9px !important; padding-bottom:5px !important;}
+			.navbar {min-height:35px !important}
+			.nav.navbar-nav.navbar-right li a {color: #fff;}
+			.navbar-default .navbar-nav > li > .dropdown-menu {background-color: #fff;}
+			.navbar-default .navbar-nav > li > .dropdown-menu > li > a {color: #9366a3;}
+
+			textarea {
+				resize:none;
+			}
+			.well{ 
+     		    background: #fff;
+     		    border-radius: 5px;
+     		    border-color: #ebc5f7;
+     		    padding-left: 15px;
+     		    padding-top: 15px;
+     		    margin:5 auto;
+			}
+			.profile_blocks {
+				padding-left: 0px;
+				padding-right: -15px
+			}
+			.bio {
+				text-align: justify;
+				width: 540px;
+			}
+			#main_profile_pic {
+				border:5px solid #9366a3;
+				border-radius: 5px;				
+			}
+			.block_thumb {
+				border:1px solid #9366a3;
+				border-radius: 20px;
+				position: relative;
+				bottom: 3px;
+				right: 3px;
+			}
+			.main_index {
+				max-width:525px;
+				margin: 0 auto;
+				padding: 10px;
+			}
+
+			.profile_index {
+				max-width:500px;
+				margin: 0 auto;
+
+			}
+			.block_header {
+				position:relative;
+				max-width: 170px;
+			}
+			.block_name {
+				position: absolute;
+				left: 53px;
+				bottom:23px;
+				font-size: 17px;
+			}
+			.block_post {
+				max-width:500px;
+				margin: 0 auto;
+			}
+			.block_time {
+				position: absolute;
+				left: 53px;
+				bottom:5px;
+				font-size: 10px
+			}
+			.fa-thumbs-up{
+				color:#9366a3;
+				font-size: 1.3em;
+			}
+			.bio {
+				position: relative;
+				min-height: 170px;
+			}
+			.follow_buttons {
+				position: absolute;
+				top:150px;
+			}
+
+
+
+  			
+ 			
+
+
+
+		</style>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-fixed-top navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>                      
+      </button>
+      <a href="{%url 'index'%}" class="navbar-left">blumury</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="{%url 'index'%}"><i class="material-icons" style="font-size: 16px;">home</i></a></li>
+        <li><a href="#"><i class="material-icons" style="font-size: 16px;">vibration</i></a></li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="material-icons" style="font-size: 16px;">settings <span class='caret'></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="{%url 'profile_view' pk=request.user.id%}">Profile</a></li>
+            <li><a href="#">Write Block</a></li>
+            <li><a href="#">Series</a></li>
+            <li class="divider"></li>
+            <li><a href="{%url 'signout'%}">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+		{%if messages%}
+			{%for message in messages%}
+				<p>{{message}}</p><br>
+			{%endfor%}
+		{%endif%}
+
+{%block body%}{%endblock%}
+
+
+<div class="container">
+  {%block logout%}
+    <a href="{%url 'signout'%}" data-toggle="tooltip" title="Get Out">Logout</a>
+  {%endblock%}
+</div>
+	
+<script>
+
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();   
+});
+
+$(function) {
+	
+}
+</script>
+	
+</body>
+</html>

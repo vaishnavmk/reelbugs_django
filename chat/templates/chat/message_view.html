@@ -1,0 +1,47 @@
+{% extends 'writers_block/base.html' %}
+{%load humanize%}
+{%load static%}
+
+{%block title%}Messages{%endblock%}
+
+{%block body%}
+	<div class="container" style="display: block;max-width: 500px; margin: 0 auto;">
+	<form class="send_chat" style="margin-bottom: 60px; position: relative;">
+		<textarea class="form-control inbox_chat" style="border: 10px solid #421c52; border-bottom: 50px solid #421c52;resize: vertical;" placeholder="Send a text to {{other_user.username}}"></textarea>
+		<input type="submit" class="btn btn-success" value="Send" style="float: right; position: absolute;bottom: 5px; right: 5px">
+	</form>
+
+	<div class=chat-list>
+		{%for chat in chats%}
+			<div class="well" style="border-radius: 5px; background: #eee; padding: 10px !important; margin-bottom: 30px !important;">
+			<a href="{% url 'profile_view' pk=chat.from_user.id%}"><img src="{{chat.from_user.person.thumbnail.url}}" style="margin-right: 10px;"> </a> <b>{{chat.from_user.username}}</b>
+			<span class="chat_time" style="background: #fff; padding:3px;border-radius:5px; ;float: right;">{{chat.posted_on | naturaltime}}</span><br>
+			<p class="message_body" style="font-family: Roboto; margin-top: 20px; overflow-wrap: break-word; word-break: break-all;">{{chat.message}}</p>
+			</div>
+		{%endfor%}
+	</div>
+	</div>
+{%endblock%}
+
+{%block js%}
+	<script type="text/javascript" src="{% static 'js/chat.js' %}"></script>
+	<script type="text/javascript">
+	$('.send_chat').submit(function(event){
+		event.preventDefault()
+		var text=$(this).find('textarea').val()
+		$(this).find('textarea').val('')
+		if (text){
+			$('.chat-list').prepend('<div class="well" style="border-radius: 5px; background: #eee; padding: 10px !important; margin-bottom: 30px !important;">'+
+			'<img src="{{request.user.person.thumbnail.url}}" style="margin-right: 10px;"><b>{{request.user.username}}</b>'+
+			'<span class="chat_time" style="background: #fff; padding:3px;border-radius:5px; ;float: right;">now</span><br>'+
+			'<p class="message_body" style="font-family: Roboto; margin-top: 20px; overflow-wrap: break-word; word-break: break-all;">'+text+'</p>'+
+			'</div>');
+		}
+		$.ajax({
+			type:'POST',
+			url:'/chat/send_message/',
+			data:{'to':{{other_user.id}}, 'text':text}
+		});
+	});
+	</script>
+{%endblock%}

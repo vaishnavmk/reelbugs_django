@@ -1,0 +1,90 @@
+{% extends 'writers_block/base.html' %}
+{% load static %}
+{% block title %}About | Blumury{% endblock %}
+{% block body %}
+	<div class="container">
+	<h1 style="text-align: center; font-family: Josefin Sans">About</h1>
+	<div class="row">
+	<div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+		<p style="font-family: Roboto, Arial">
+		ReelBugs is humble little website made to entertain rants on movies and TV series.
+		Just to make it less confusing and more underwhelming, you can say we're kinda like a mass forum for movies and TV series. You can post without an account.
+		</p>
+		<p style="font-family: Roboto">
+
+		ReelBugs is neither groundbreaking, nor innovative, nor beautifully engineered, nor as cool as Reddit. Blumury's just a small website in its own corner of the web. To support us, all you need to do is share movie/TV pages whenever you can. </p>
+
+		<p style="font-family: Roboto; font-weight: bold;">
+		If you already do that, a big thanks!
+		</p>
+
+		<p>Vaish M K</p>
+		
+		<p class="text-muted"> Note: "This product uses the TMDb API but is not endorsed or certified by TMDb."</p><br><br>
+
+		<a href="https://www.tmdb.org"><img style="display: block;width: 200px;margin:0 auto;" alt="TMDb logo" src="{% static 'images/tmdb.png' %}"></a>
+
+	</div>
+	</div>
+	</div>
+	<script type="text/javascript">
+		var m_srch=$('#main_search')
+		var options={
+		  url:function(phrase){
+		    return 'https://api.themoviedb.org/3/search/multi?api_key=4ce570b5135503d520df426d7989073f&query='+phrase.replace(/\s+/,'+')        
+		  },
+		  getValue:function(element) {
+		    if (element.title){
+		      return element.title;
+		    }
+		    else {
+		      return element.name;
+		    }
+		  },
+		  listLocation: 'results',
+		  theme: "round",
+		  requestDelay: 500,
+		  list: {
+		      maxNumberOfElements: 10,
+
+		      showAnimation: {
+		            type: "fade", //normal|slide|fade
+		            time: 400,
+		            callback: function() {}
+		          },
+
+		          hideAnimation: {
+		            type: "slide", //normal|slide|fade
+		            time: 400,
+		            callback: function() {}
+		          },
+
+		      onChooseEvent: function(){
+		        var movie_id=m_srch.getSelectedItemData().id;
+		        var g=m_srch.getSelectedItemData().media_type[0]+'d'
+		        window.location.href='/index/'+g+'/'+movie_id
+		      }
+		    },
+		  template: {
+		    type: 'custom',
+		    method: function(value, item){
+		      var t=item.media_type
+		      if (t=='movie'){
+		        var j= item.poster_path ? 'https://image.tmdb.org/t/p/w92'+item.poster_path : '/static/images/search_back.jpeg'
+		        return '<a href="/index/md/'+item.id+'" style="text-decoration:none; color:#000; position:relative"><img src="'+j+'" class="result_img" style="max-width:45px"><span class="search_title">'+item.title+'</span><span class="search_date">'+item.release_date+'</span><span class="search_typ">Movie</span></a>'
+		      }
+		      else if (t=='tv'){
+		        var j= item.poster_path ? 'https://image.tmdb.org/t/p/w92'+item.poster_path : '/static/images/search_back.jpeg'
+		        return '<a href="/index/td/'+item.id+'" style="text-decoration:none; color:#000; position:relative"><img src="'+j+'" class="result_img" style="max-width:45px"><span class="search_title">'+item.name+'</span><span class="search_date">'+item.first_air_date+'</span><span class="search_typ">TV</span></a>'
+		      }
+		      else {
+		        var j= item.profile_path ? 'https://image.tmdb.org/t/p/w92'+item.profile_path : '/static/images/search_back.jpeg'
+		        return '<a href="/index/pd/'+item.id+'" style="text-decoration:none; color:#000"><img src="'+j+'" class="result_img" style="max-width:45px"><span class="search_title">'+item.name+'</span><span class="search_typ">Person</span>'
+		      }
+
+		    }        
+		    }
+		  }
+		m_srch.easyAutocomplete(options);
+	</script>
+{% endblock %}

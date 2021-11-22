@@ -1,0 +1,99 @@
+{%load static%}
+<!doctype html>
+<html>
+	<head>
+		<!-- Global Site Tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-107438690-2"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+		  gtag('config', 'UA-107438690-2');
+		</script>
+
+
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+		<meta property="fb:app_id" content="136378896965897" />
+		{% block extrahead %}
+		{% endblock %}
+		<title>{%block title%}{%endblock%}</title>
+		<link rel="stylesheet" href="{%static 'fa/css/mix.min.css'%}">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+		<link rel="shortcut icon" href="{% static 'images/logo3.png' %}">
+		<link href="https://fonts.googleapis.com/css?family=Josefin+Sans|Roboto" rel="stylesheet">
+
+		<script
+		  src="https://code.jquery.com/jquery-3.2.1.min.js"
+		  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+		  crossorigin="anonymous"></script>
+		
+		<script src="{% static 'easyautocomplete/jquery.easy-autocomplete.min.js' %}"></script>
+		<script src="{% static 'sticky_kit/dist/sticky-kit.min.js' %}" async='async'></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" async='async'></script>
+
+
+		<style>
+		.blumury{
+			color: #fff; position: relative; right: 15px; top:9px; font-family: 'Josefin Sans', sans-serif; font-size: 24px;
+		}
+		.blumury2{
+			color: #fff; position: relative; right: 15px; top:13px; font-family: 'Josefin Sans'; font-size: 10px; font-weight: bold;
+		}
+		{%block style%}{%endblock%}</style>
+		
+	</head>
+	
+	<body>
+		<!--navbar!-->
+		<div id="custom-bootstrap-menu" class="navbar navbar-default navbar-fixed-top" role="navigation" style="border-bottom: 3px solid #fff; border-left-color: #fff; border-right-color: #fff; border-bottom-color: #eee; "> 
+				<div class="container-fluid">
+						<div class="navbar-header">
+						<a class="navbar-brand" href="{% url 'index2' %}" style="color: #fff; font-family: Arial;">
+						<img  src="{%static 'images/reels.png'%}" style="height: 45px;position: relative;bottom: 15px; right: 35px;" alt="Blumury Logo"></a><a href="{%url 'index2'%}" style="text-decoration: none;">
+						<span class="blumury2" style="position: absolute;left:95px; top:35px;">The Friendly Movie DB</span></a>
+
+								<button style="background: #fff" type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-menubuilder"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+								</button>
+						</div>
+						<div class="collapse navbar-collapse navbar-menubuilder">
+
+
+								<ul class="nav navbar-nav navbar-right">
+									<li><a href="{%url 'index2'%}">Home <i class="fa fa-home"></i></a></li>
+									<li><a href="{%url 'artwork' %}">Fan Art <i class="fa fa-deviantart"></i> </a></li>
+									<li class="dropdown">
+									        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+									        More <i class="fa fa-ellipsis-v"></i>
+									        <ul class="dropdown-menu">
+									          <li><a href="{%url 'about' %}">About</i> </a></li>
+									          <li><a href="{%url 'privacy_policy' %}">Privacy Policy</a></li>
+									          <li><a href="{%url 'contact' %}">Contact Us</a></li>
+									        </ul>
+									      </li>
+								</ul>
+
+						</div>
+						
+				</div>
+				<div class="row" style="background: #eee;">
+				<div class="col-xs-12 col-md-8 col-md-offset-2" style="position: relative; background: #eee;">
+							<input type="text" id="main_search" style="" placeholder="Search for any Movie/TV Series" >
+							<i class="fa fa-search" style="position: absolute; top:10px; left: 20px"></i>
+				</div>
+				</div>
+		</div>
+		<!--navbar!-->
+		<div class="alerts" style="position:fixed; top:90px;height: 30px; width: 100%;background: rgb(79, 119, 13); z-index: 1; display: none;"><p style="font-family: Roboto, Arial;padding: 5px; color: #fff; text-align: center;"></p></div>
+		{%block body%}
+		{%endblock%}
+
+		{%block js%}
+		{%endblock%}
+		<script type="text/javascript">
+		var infolinks_pid = 3053407;
+		var infolinks_wsid = 0;
+		</script>
+		<script type="text/javascript" src="//resources.infolinks.com/js/infolinks_main.js"></script>		
+	</body>
+</html>

@@ -1,0 +1,74 @@
+{%extends 'writers_block/base.html'%}
+{%load static%}
+{%load block_tags%}
+{%block title%}
+  Blumury | {{user.username}}
+{%endblock%}
+{%block body%}
+  {%with user.person as person%}
+    <div class="container">
+      <div class="row"> 
+        <!--avatar and username!-->     
+        <div class="col-xs-12 col-md-3 profile_dets">
+          <img data-toggle="tooltip" src="{{person.avatar}}" onerror="this.onerror=null;this.src='/media/std_avatar.jpeg';" class="profile_pic_center" style="width: 200px;">
+
+          <h2 class="profile_name">{{user.username}}</h2><br>
+          {% if user == request.user %}
+            <p class="edit_link"><a  href="{% url 'profile_edit' %}">Edit Profile</a></p>
+          {% endif %}
+            <div class="follow_btn" style="text-align: center; margin-top: 20px;">
+              {% if user == request.user %}
+                <a href="#" class="btn btn-default" style="margin-right: 0"> Followers</a>
+              {% else %}
+                <a href="#" id="{{user.id}}" class="foll_link btn btn-default" style="margin-right: 0">Follow</a>
+              {% endif %}
+                <span class="follower_count">{{person.follower_count}}</span><br>
+                <h2 style="font-family: Josefin Sans">Wooden Couch<i class="material-icons" style="color: #772f02; font-size: 30px; position: relative;top:7px; left: 5px">weekend</i></h2>
+            </div>
+        </div>
+
+        <!--bio credentials!-->
+
+        <div class="col-xs-12 col-md-6">
+          <div class="container" id="bio">
+            <h2 class="bio_head">Bio</h2>
+            <p style="overflow-wrap: break-word; font-family: Josefin Sans">{{person.me}}</p>
+          </div>
+          <div class="profile_index top-buffer2">
+            {%show_blocks%}
+          </div>
+        </div>
+
+        {%if user.pieces.all%}
+        <div class="col-xs-12 col-md-3 hidden-xs hidden-sm stories sidebar" style="; padding: 0px !important; border-radius: 10px; margin-top: 200px;">
+
+          <div class="sidebar-inner" style="padding: 20px;padding-top: 0px; margin: 0 auto;padding-bottom: 10px; border-radius: 10px; width: 90%; height: 50%;">
+          <div class="story_hd" style="padding:5px; border-radius: 10px; margin-bottom: 10px">
+          <h4 style="text-align: center; color: #421c52;"></h4>
+          </div>
+          {%for piece in user.pieces.all%}
+
+
+          {%endfor%}
+
+        </div>
+        </div>
+        {%endif%}
+      </div>
+    </div>
+  {%endwith%}
+{%endblock%}
+{%block js%}
+<script type="text/javascript" src="{% static 'js/blocks.js' %}"></script>
+<script type="text/javascript">
+  if ($(window).width() > 768){
+  $(window).on("load", function(){
+    $('.profile_dets').stick_in_parent({
+      bottoming:false,
+      offset_top:100,
+    });
+  });
+}
+</script>
+
+{%endblock%}

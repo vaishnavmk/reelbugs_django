@@ -1,0 +1,362 @@
+{% extends 'writers_block/base.html' %}
+{% load static %}
+{% block extrahead %}
+<link href="{% static 'photopile/css/photopile.css' %}" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'mslider/src/jquery.vm-carousel.css' %}">
+
+<meta name="description" content="{{person.biography}}" />
+
+<meta property="og:url" content="https://reelbugs.com/pd/{{person.id}}" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Everything You Need To Know About {{person.name}}" />
+<meta property="og:description" content="{{ person.bio}}" />
+<meta property="og:image" content="https://image.tmdb.org/t/p/w185/{{person.profile_path}}" />
+<!--Twitter --> 
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Everything You Need To Know About {{person.name}}" />
+<meta name="twitter:description" content="{{person.bio}}" />
+<meta name="twitter:image" content="https://image.tmdb.org/t/p/w185/{{person.profile_path}}" />
+
+{% endblock %}
+
+{% block title %} Everything About {{person.name}} - Movies, Bio And Images | ReelBugs  {% endblock %}
+
+{% block style %} 
+
+hr{
+	border-color:#c0b5c1;
+}
+
+h2{
+	font-family: Josefin Sans
+}
+
+.film_links, .film_links:hover, .film_links:active, .film_links:visited{
+	font-family: Roboto;
+	font-weight: bold;
+	color: #000
+}
+
+{% endblock %}
+
+
+{% block body %}
+<div style="position: fixed;">
+	<img src="{% static 'images/back.jpg' %}" style="opacity: 0.15; width: 100vw;height: 100vh; overflow: hidden; background-repeat: repeat;">
+	</div>
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12 col-sm-5 col-md-3">
+			{% if person.profile_path %}
+			<img id="main_profile" style="margin: 10px; border: 3px solid #421c52; margin-top: 20px" src="https://image.tmdb.org/t/p/w185/{{person.profile_path}}" alt="{{person.name}} Image">
+			{% else %}
+			<img id="main_profile" style="margin: 10px; border: 3px solid #421c52; margin-top: 20px" src="{% static 'images/postr_thumb.jpeg' %}" alt="{{person.name}} Image">
+			{% endif %}
+		</div>
+		<div class="col-xs-12 col-sm-7 col-md-9">
+			<hr>
+			<h1>{{person.name}}</h1>
+			<hr>
+			<div id="p_ovrv" style="max-height: 177px; overflow-y: scroll; font-family: Roboto"> 
+			<p>{{person.biography}}</p>
+			</div>
+		</div>
+
+
+	</div>
+	
+	<div class="row">
+		<div class="col-sm-11">
+			<div id="m_casted_cs">
+			<hr style="border-color: #380b56; margin-top: 60px;">
+			<h2> {{person.name}} Movies And TV Shows</h2>
+			<hr style="border-color: #380b56;">
+			</div>
+
+			<div id='celeb_credits' class="photopile-wrapper" style="max-height: 600px; overflow-y: scroll;">
+			  <ul class="photopile">
+			    
+			 	</ul>
+			</div>
+
+
+	</div>
+	<div class="col-sm-11 celeb_images">
+	<hr style="border-color: #380b56; margin-top: 60px;">
+	<h2>{{person.name}} Images</h2>
+	<hr style="border-color: #380b56;">
+		<div id="carousel">
+		<ul class="vmcarousel-normal">
+		  
+		</ul>			
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12">
+	<div id="mact">
+	<hr>
+		<h2>{{person.name}} Movies Acted In</h2>
+	<hr>
+		<table class="table" id="m_cast_creds">
+			<tr>
+			<th>Movie</th>
+			<th>Character</th>
+			<th>Released On</th>
+			</tr>
+		</table>
+	</div>
+
+	<div id="mpro">
+	<hr>
+		<h2>{{person.name}} Movies Production</h2>
+	<hr>
+		<table class="table" id="m_crew_creds">
+			<tr>
+			<th>Movie</th>
+			<th>Job</th>
+			<th>Released On</th>
+			</tr>
+		</table>
+	</div>
+
+	<div id="tact">
+	<hr>
+		<h2>{{person.name}} TV Show Appearances</h2>
+	<hr>
+		<table class="table" id="t_cast_creds">
+			<tr>
+			<th>Show</th>
+			<th>As</th>
+			<th>First Aired</th>
+			</tr>
+		</table>
+	</div>
+
+
+	<div id="tpro">
+	<hr>
+		<h2>{{person.name}} TV Show Production</h2>
+	<hr>
+		<table class="table" id="t_crew_creds" style="margin-bottom: 50px;">
+			<tr>
+			<th>Show</th>
+			<th>Job</th>
+			<th>First Aired</th>
+			</tr>
+		</table>
+	</div>
+
+	</div>
+</div>
+</div>
+
+<script type="text/javascript" src="{% static 'lightbox/src/js/lightbox.js' %}"></script>
+<script type="text/javascript">
+
+
+	if ($('#p_ovrv p').html()==''){
+		$('#p_ovrv').html('<p class="text-muted"> Bio is not available. You can check out {{person.name}}\'s work below.</p>')
+
+
+	}
+
+	$.ajax({
+		url:'https://api.themoviedb.org/3/person/{{person.id}}/images?api_key=4ce570b5135503d520df426d7989073f', 
+		async:false,
+		success: function(data){
+			if (data.profiles.length!=0){
+				data.profiles.slice(0,20).forEach(function(element){
+				$('#carousel .vmcarousel-normal').append('<li><a href="https://image.tmdb.org/t/p/w780'+element.file_path+'" data-lightbox="profile_pic"><img src="https://image.tmdb.org/t/p/w185'+element.file_path+'" alt="{{person.name}} Images Gallery" /></a></li>');
+				});
+			}
+			else{
+				$('.celeb_images').hide()
+			}
+		  }
+	  });
+	
+	var pjs={{p_js|safe}}
+
+	var posters={}
+
+	$.ajax({
+		url:'https://api.themoviedb.org/3/person/{{person.id}}/movie_credits?api_key=4ce570b5135503d520df426d7989073f',
+		success: function(data){
+				data.cast.slice(0,20).forEach(function(element){
+				if (element.poster_path){
+				$('.photopile').append('<li><a href="/index/md/'+element.id+'"><img src="https://image.tmdb.org/t/p/w154'+element.poster_path+'" alt="{{person.name}} '+element.title+' poster or '+element.character+' '+element.title+'"></a></li>')
+				}
+
+			});
+
+			data.cast.forEach(function(element){
+			$('#m_cast_creds').append('<tr><td><a class="film_links" target="_blank" href="/index/md/'+element.id+'">'+element.title+'</a></td><td>'+element.character+'</td><td>'+element.release_date+'</td></tr>');
+			});
+
+
+			data.crew.slice(0,20).forEach(function(element){
+				if (element.poster_path){
+				$('.photopile').append('<li><a href="/index/md/'+element.id+'"><img src="https://image.tmdb.org/t/p/w154'+element.poster_path+'" alt="{{person.name}} '+element.title+' poster or '+element.character+' '+element.title+'"></a></li>')
+			}
+			});
+
+
+			data.crew.forEach(function(element){
+			$('#m_crew_creds').append('<tr><td><a class="film_links" target="_blank" href="/index/md/'+element.id+'">'+element.title+'</a></td><td>'+element.job+'</td><td>'+element.release_date+'</td></tr>');
+			});
+
+			if (!data.cast.length){
+				$('#mact').slideUp()
+			}
+
+			if (!data.crew.length){
+				$('#mpro').slideUp()
+			}			
+
+		}
+	});
+
+	$.ajax({
+		url:'https://api.themoviedb.org/3/person/{{person.id}}/tv_credits?api_key=4ce570b5135503d520df426d7989073f',
+		success: function(data){
+		data.cast.slice(0,20).forEach(function(element){
+			if (element.poster_path){
+				$('.photopile').append('<li><a href="/index/td/'+element.id+'"><img src="https://image.tmdb.org/t/p/w154'+element.poster_path+'" alt="{{person.name}} '+element.title+' poster or '+element.character+' '+element.title+'"></a></li>')
+			}
+			});
+		data.crew.slice(0,20).forEach(function(element){
+				if (element.poster_path){
+				$('.photopile').append('<li><a href="/index/td/'+element.id+'"><img src="https://image.tmdb.org/t/p/w154'+element.poster_path+'" alt="{{person.name}} '+element.title+' poster or '+element.character+' '+element.title+'"></a></li>')
+			}
+
+		});
+
+		data.cast.forEach(function(element){
+			$('#t_cast_creds').append('<tr><td><a class="film_links" target="_blank" href="/index/td/'+element.id+'">'+element.name+'</a></td><td>'+element.character+'</td><td>'+element.first_air_date+'</td></tr>');
+			});
+
+		data.crew.forEach(function(element){
+			$('#t_crew_creds').append('<tr><td><a class="film_links" target="_blank" href="/index/td/'+element.id+'">'+element.name+'</a></td><td>'+element.job+'</td><td>'+element.first_air_date+'</td></tr>');
+			});
+
+
+		if (!data.cast.length){
+				$('#tact').slideUp();
+		}
+
+		if (!data.crew.length){
+				$('#tpro').slideUp();
+			}
+
+	}
+});
+
+
+
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script> 
+<script src="{% static 'mslider/src/jquery.vm-carousel.js' %}"></script>
+<script type="text/javascript" src="{% static 'scroll/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+
+
+
+<script type="text/javascript">
+		
+$(window).on('load', function(){
+	$('.vmcarousel-normal').vmcarousel();
+})
+
+$('#p_ovrv, #celeb_credits').mCustomScrollbar({
+		theme:'minimal-dark',
+	});
+
+$('#p_images').mCustomScrollbar({
+		theme:'minimal-dark',
+		axis:'x'
+	});	
+
+
+
+</script>
+
+<script type="text/javascript">
+	//main search stuff
+
+
+	    var m_srch=$('#main_search')
+	    var options={
+	      url:function(phrase){
+	        return 'https://api.themoviedb.org/3/search/multi?api_key=4ce570b5135503d520df426d7989073f&query='+phrase.replace(/\s+/,'+')        
+	      },
+	      getValue:function(element) {
+	        if (element.title){
+	          return element.title;
+	        }
+	        else {
+	          return element.name;
+	        }
+	      },
+	      listLocation: 'results',
+	      theme: "round",
+	      requestDelay: 500,
+	      list: {
+	          maxNumberOfElements: 7,
+
+	          showAnimation: {
+	                type: "fade", //normal|slide|fade
+	                time: 400,
+	                callback: function() {}
+	              },
+
+	              hideAnimation: {
+	                type: "slide", //normal|slide|fade
+	                time: 400,
+	                callback: function() {}
+	              },
+
+	          onChooseEvent: function(){
+	            var movie_id=m_srch.getSelectedItemData().id;
+	            var g=m_srch.getSelectedItemData().media_type
+	            if (g=='movie'){
+	              window.location.href='/index/md/'+movie_id+'/';
+	            }
+	            else if (g=='tv'){
+	              window.location.href='/index/td/'+movie_id+'/'
+	            }
+	            else{
+	            	 window.location.href='/index/pd/'+movie_id+'/'
+	            }
+
+	          }
+	        },
+	      template: {
+	        type: 'custom',
+	        method: function(value, item){
+	          var t=item.media_type
+	          if (t=='movie'){
+	            var j= item.poster_path ? 'https://image.tmdb.org/t/p/w92'+item.poster_path : '/static/images/search_back.jpeg'
+	            return '<a href="/index/md/'+item.id+'" style="text-decoration:none; color:#000; position:relative"><img src="'+j+'" class="result_img" style="max-width:45px"  alt="'+item.title+' poster"><span class="search_title">'+item.title+'</span><span class="search_date">'+item.release_date+'</span><span class="search_typ">Movie</span></a>'
+	          }
+	          else if (t=='tv'){
+	            var j= item.poster_path ? 'https://image.tmdb.org/t/p/w92'+item.poster_path : '/static/images/search_back.jpeg'
+	            return '<a href="/index/td/'+item.id+'" style="text-decoration:none; color:#000; position:relative"><img src="'+j+'" class="result_img" style="max-width:45px" alt="'+item.name+' poster"><span class="search_title">'+item.name+'</span><span class="search_date">'+item.first_air_date+'</span><span class="search_typ">TV</span></a>'
+	          }
+	          else {
+	            var j= item.profile_path ? 'https://image.tmdb.org/t/p/w92'+item.profile_path : '/static/images/search_back.jpeg'
+	            return '<a href="/index/pd/'+item.id+'" style="text-decoration:none; color:#000"><img src="'+j+'" class="result_img" style="max-width:45px" alt="'+item.name+' profile"><span class="search_title">'+item.name+'</span><span class="search_typ">Person</span>'
+	          }
+
+	        }        
+	        }
+	      }
+	    m_srch.easyAutocomplete(options);
+</script>
+
+
+<script type="text/javascript">
+
+</script>
+
+{% endblock %}

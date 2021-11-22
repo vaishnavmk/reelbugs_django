@@ -1,0 +1,517 @@
+{% extends 'writers_block/base.html' %}
+{% load static %}
+{% load block_tags %}
+{% load humanize %}
+{% load social_share %}
+{% block extrahead %}
+	<meta name="description" content="{{movie.overview | truncatechars:65}}" />
+	<!--Facebook--> 
+	<meta property="og:url" content="https://reelbugs.com/md/{{movie.id}}" />
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="{{movie.title}}" />
+	<meta property="og:description" content="{{movie.overview }}" />
+	<meta property="og:image" content="https://image.tmdb.org/t/p/w1280{{movie.backdrop_path}}" />
+	<!--Twitter --> 
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="'{{movie.title }}'" />
+	<meta name="twitter:description" content="{{movie.overview}}" />
+	<meta name="twitter:image" content="https://image.tmdb.org/t/p/w1280{{movie.backdrop_path}}" />
+
+	<link rel="stylesheet" type="text/css" href="{% static 'jquery-bar-rating-master/dist/themes/fontawesome-stars-o.css' %}">
+
+{% endblock %}
+
+{% block title %} {{movie.title}} - Movie Posters, Reviews And Sneakpeeks | ReelBugs {% endblock %}
+
+{% block style %} 
+
+hr{
+	border-color:#c0b5c1;
+}
+
+
+{% endblock %}
+{% block body %}
+	<div class="container movie_page_top" style="width: 100%; padding: 0; bottom: 8px; position:relative">
+		<div class="movie_top_det">
+		
+			<h1 style="font-family: Roboto; color: #421c52; display: inline-block;">{{movie.title}}</h1>
+			<span style="font-family: Roboto; color: #421c52; display: inline; font-weight: bold; position: relative; bottom: 5px;">&nbsp;
+			({{movie.release_date}})</span>
+			<p class="movie_ovrv" style=""> {{movie.title}} is a {{movie.release_date|slice:":4"}} {{movie.spoken_lanugages.name}} {% for i in movie.genres %} {{i.name}} {% endfor %} movie <span class="creators">directed by </span>. {% if movie.credits.cast %}It stars {% for i in movie.credits.cast|slice:":3" %} {{i.name}}, {% endfor %} among others.{% endif %} </p>
+			{% if movie.vote_average %}
+			<p class="movie_ovrv">{{movie.title}} is currently rated {{movie.vote_average}} stars on the ReelBugs scale.</p>
+			{% endif %}
+			
+			{% if movie.vote_average %}
+			<select id="star_rating" style="margin-top: 20px;">
+  				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="10">10</option>
+			</select>
+			{% endif %}
+
+		</div>
+
+		{% if movie.backdrop_path %}
+	    <div class="back_movie" style=" background-image:url(https://image.tmdb.org/t/p/w300{{movie.backdrop_path}});">
+    {% else %}
+    	<div  class="back_movie" style="  background-image:url(https://image.tmdb.org/t/p/w500{{movie.poster_path}});">
+    {% endif %}
+      <div class="layer">
+      </div>	
+	    </div>
+	        <div class="col-xs-12 col-sm-3" style="">
+	    	    <div class="poster_top">
+	    	    {% if movie.poster_path %}
+	    	    	<img src="https://image.tmdb.org/t/p/w185{{movie.poster_path}}" class="post_img" alt="{{ movie.title }} poster image">
+	    	    {% else %}
+	    	    	<img src="{% static 'images/postr_thumb.jpeg' %}" class="post_img" alt="{{ movie.title }} poster image">
+	    	    {% endif %}
+	    	    </div>
+	        </div>
+
+	</div>
+
+	<div class="container movie_stat_cont" style="width: 100%; ">
+		<div class="row">
+		<div class="col-xs-12 hidden-sm hidden-md hidden-lg">
+			<h2 data-toggle="collapse" style="text-align: center;margin-bottom:20px;">{{movie.original_title}}</h2>
+			<p style="font-family: Roboto; text-align: center; margin-bottom: 20px">{{movie.overview}}</p>
+		</div>
+
+
+		<div class="col-sm-4 col-md-3" id="m_stats">
+
+			<table class="table" id="info_table">
+				<tr>
+				<th>Title</th>
+				<td>{{movie.title}}</td>
+				</tr>
+				<tr>
+				<th>Language</th>
+				<td>
+				{{ movie.original_language }}
+				</td>
+				</tr>
+				{% if movie.genres %}
+				<tr>
+				<th>Genres</th>
+				<td>
+					{% for i in movie.genres %}
+						{{i.name}}<br/>
+					{% endfor %}
+				</td>
+				</tr>
+				<tr>
+				<th>Status</th>
+				<td>{{movie.status}}</td>
+				</tr>
+				{% endif %}
+				{% if movie.production_countries %}
+				<tr>
+				<th>Countries</th>
+				<td>
+					{% for i in movie.production_countries %}
+						{{i.name}},
+					{% endfor %}
+				</td>
+				</tr>
+				{% endif %}
+				{% if movie.runtime %}
+				<tr>
+				<th>Runtime</th>
+				<td>{{movie.runtime}} min</td>
+				</tr>
+				{% endif %}
+				{% if movie.tagline %}
+				<tr>
+				<th>Tagline</th>
+				<td>"{{movie.tagline}}"</td>
+				</tr>
+				{% endif %}
+			</table>
+
+
+
+
+				
+			<div id="image_coll_cs" class="head_sec">
+			<hr style="margin-top: 30px;">
+			<h2 style="font-family: Josefin Sans, Roboto, Arial; text-align: center;"> {{movie.title}} Images </h2>
+			<hr>
+			</div>
+			
+			<div id="image_collection">
+			<div class="image_inner">
+				<table class="table table-borderless"></table>
+			</div>
+			</div>
+		</div>
+
+			<div class="col-xs-12 col-sm-8 col-md-6" id="this_blocks">
+
+
+			  	<div id="summary_cs" class="head_sec">
+			  		<hr style="margin-top: 30px;">
+			  		<h2 style="font-family: Josefin Sans, Roboto, Arial; text-align: center;"> {{movie.title}} Summary</h2>
+			  		<hr>
+			  	</div>
+			  	<div class="main_summary">
+			  	{% if movie.overview %}
+			  	<p style="font-family: Roboto;;">{{movie.overview}}</p>
+			  	{% else %}
+			  	<p class="text-muted" style="font-family: Roboto; text-align: center;">No movie summary available</p>
+			  	{% endif %}
+			  	</div>
+
+			  {% if main_vid %}
+			  	<div class="vid-container">
+			  		<iframe 
+			  		src="https://www.youtube.com/embed/{{main_vid}}?playlist={{vid}}&volume=0&iv_load_policy=3&controls=1&showinfo=0&modestbranding=0&color=white&theme=light&loop=1" allowfullscreen>
+			  		</iframe>
+			  	</div>
+			  {% endif %}
+
+			  <div id="cast_cs" class="head_sec">
+					<hr style="margin-top: 30px;">
+					<h2 style="font-family: Josefin Sans, Roboto, Arial; text-align: center;"> {{movie.title}} Cast</h2>
+					<hr>
+				</div>
+			  <div id="cast_table" style="overflow-x: scroll;">
+			  	<table class="table table-borderless">
+					<tr class="mobile_hori">
+					{% with movie.credits as creds %}
+						{% for i in creds.cast|slice:":20" %}						
+							<td style="text-align: center;"">
+								{% if i.profile_path %}
+								<a href="/index/pd/{{i.id}}"><img src="https://image.tmdb.org/t/p/w45{{i.profile_path}}" alt="{{i.name}} {{movie.title}} {{i.character}}" ></a>
+								{% else %}
+								<a href="/index/pd/{{i.id}}"><img src="{% static 'images/pro_thumb.jpeg' %}" alt="{{i.name}} {{movie.title}} {{i.character}} Image"></a>
+								{% endif %}
+							
+								<h6 style="font-weight:bold; width: 60px; margin: 5px auto; text-align: center;">{{i.name}} </h6>
+			  					<p style="font-size:11px; line-height: 92%; width: 60px; margin: 5px auto;" class="text-muted">{{i.character}}</p>
+							</td>
+						{% empty %}
+						<tr>
+						<td class="text-muted" style="text-align: center;">No cast available</td>
+						</tr>
+						{% endfor %}
+					{% endwith %}
+					</tr>
+				</table>
+			  </div>
+
+			    <div id="cert_cs" class="head_sec">
+			  		<hr style="margin-top: 30px;">
+			  		<h2 style="font-family: Josefin Sans, Roboto, Arial; text-align: center;"> Parents Guide </h2>
+			  		<hr>
+			  	</div>
+			  	<div style="margin-bottom: 60px;">
+			  		<p style="font-family: Roboto;">{% ifnotequal cert '' %}{{movie.title}}{{cert}}{% if movie.imdb_id %} For a more detailed description, check out <a target="_blank" href="http://www.imdb.com/title/{{movie.imdb_id}}/parentalguide">{{movie.title}} - Parents Guide</a></p>{% endif %}{% else %} <p style="font-family: Roboto; text-align: center;"> Check out <a target="_blank" href="http://www.imdb.com/title/{{movie.imdb_id}}/parentalguide">{{movie.title}} - Parents Guide</a> {% endifnotequal %}</p>
+			  	</div>
+
+
+
+			  <div class="modal-dialog">
+			    <div class="modal-content" style="background: #421c52; border-radius: 5px; padding: 10px; padding-bottom: 0px">
+			    <div class="modal-body" style="position: relative; padding: 15px;">
+			      <form id="bloom" action="{% url 'anon_movie_block' movie_id=movie.id %}", method="post" enctype="multipart/form-data">
+			    	{%csrf_token%}
+			    	{{block_form.content}}
+			      {{block_form.media}}
+			      <div class="modal-footer" style="border-top: none; height: 60px; position: relative;">   
+			        <ul class="list-inline block_btns" style="list-style: none; ">
+			        <li style="float: left;">
+			        <label class="btn block_cam"><i class="fa fa-camera" style="font-size: 19px;"></i>
+			        <input class="btn" id="id_image" name="image" type="file" hidden />
+			        </label>
+			        </li>
+			        <li style="float: left;">
+			        <img id="upload_pre" style="width: 50px; height: 37px; display: none; position: relative; left: 7px; border:2px solid #eee" alt="uploaded image preview"> 
+			        </li>
+			  
+			        <li>
+			        <button class="btn block_share" type="submit" style=>
+			        <i class="fa fa-share" style="font-size: 19px;"></i></button>
+			        </li>
+			        </ul>
+			      </div>
+			      </form>
+			    </div>
+			    </div>
+			  </div>
+			   <script type="text/javascript">
+			  	$('.modal-dialog textarea').attr('placeholder', "Post a review on {{movie.title}}")
+			  </script>
+
+
+
+			  <div class="m_blocks">
+
+			  
+			  {% show_blocks %}
+			
+			  {% if yoblocks %}
+			  <div class="head_sec">
+			    <hr style="margin-top: 30px;">
+			  	<h2 style="font-family: Josefin Sans, Roboto, Arial; text-align: center;"> {{movie.title}} On Youtube </h2>
+			    <hr>
+			  </div>
+			  {% for block in yoblocks %}
+
+			    <div class="well">
+
+			      <div class="block_header">
+			      	<i class="fa fa-youtube"></i>
+			          <img class="block_thumb" src="{{block.profile_pic}}" alt="User Profile">
+			       <div class="block_name">
+			          <b>{{block.screen_name}}</b>
+			        </div>
+			        <span class="block_time">{{block.time | naturalday }}</span>
+			      </div>
+
+
+			      <div class="block_body" style="position: relative;">
+			        <div class="block_content">
+			          <p>{{block.snippet.topLevelComment.snippet.textDisplay | safe}}</p>
+			        </div>
+			      </div>
+			      <div class="yolike">
+			          <i id="{{block.id}}" class="fa fa-hand-paper-o" aria-hidden="true"></i>&nbsp;
+			          <div class="lnum" style="display: inline;">{{block.snippet.topLevelComment.snippet.likeCount}}</div>
+			      </div>
+			      <div class="yolink">
+			        <a target="_blank" href="{{block.snippet.topLevelComment.snippet.authorChannelUrl}}"><i class="fa fa-user-circle" aria-hidden="true" style="position: relative;top:3px;"></i></a>
+			      </div>
+			    </div>
+
+			    {% empty %}
+			    <h4 class="text-muted" style="text-align: center;">Be the first to post!</h4>
+			  {%endfor%}
+			  {% endif %}
+			  </div>
+			</div>
+
+
+			<div class="col-md-3 hidden-sm hidden-xs" id="right-bar">
+				<div id="right-col">
+
+				<div class="sub_box" style="padding: 10px; background: #200f27; margin-top: 28px;">
+
+								<p style="font-size: 12px; font-weight: bold; font-family: Josefin Sans, Roboto, Arial; text-align: center; color: #fff"> Subscribe For Free Movie Tickets! </p>
+								<form class="sub_form">
+								<table width="100%">
+								<tbody><tr>
+								<td>
+								<input class="sub_email" style="padding-left: 10px;height: 32px;border: 1px solid #EEE;margin-bottom: 5px;font: normal normal 13px Roboto;font-size: 12px;
+				    box-sizing: border-box; width: 100%" name="email" placeholder="Email address" type="email" required>
+								</td>
+								</tr>
+								<tr>
+								<td width="64px">
+								<input style="margin-left: 0;
+				    width: 100%;
+				    border-radius: 0;
+				    height: 30px;
+				    font-size: 11px;
+				    font-family: 'Montserrat',sans-serif;
+				    color: #fff;
+				    background-color: #421c52;
+				    text-transform: uppercase;
+				    letter-spacing: 1px; border:none" type="submit" value="Subscribe">
+								</td>
+								</tr>
+								</tbody></table>
+								</form>
+				</div>
+				
+				<a href="{% url 'artwork' %}"><img class="fanart_img" src="{% static 'images/fanart.jpg' %}" ></a>
+				<div class="fan_art" style="margin-top: 20px; border: 2px solid #421c52; padding: 5px; padding-top: 8px">
+				<a href="{% url 'artwork' %}" style="text-decoration: none;"><p style="color: #000;font-family: Josefin Sans, Roboto, Arial; text-align: center;">Submit '{{movie.title}}' Fan Art</p></a>
+				</div>
+				
+
+			<div id="similar"">
+				<div class="head_sec">
+				<hr style="margin-top: 20px;">
+				<h2 style="font-family: Josefin Sans, Roboto, Arial; text-align: center;">Movies Similar to {{ movie.title}}</h2>
+				<hr>
+				</div>
+			</div>
+
+			<div class="for_stick" style="height: 80px;">
+					
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+<script type="text/javascript" src="{% static 'js/blocks.min.js' %}"></script>
+<script src="{% static 'jquery-bar-rating-master/dist/jquery.barrating.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'lightbox/dist/js/lightbox.min.js' %}"></script> 
+<script type="text/javascript" src="{% static 'scroll/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+<script type="text/javascript">	
+
+	$('#cast_table').mCustomScrollbar({
+		theme:'minimal-dark',
+		axis:'x',
+	});	
+
+	$('.sub_form').submit(function(){
+		event.preventDefault();
+		var email=$('.sub_form').find('.sub_email').val()
+		$.ajax({
+			type:'POST',
+			url:"{% url 'subscribe' %}",
+			data:{'email':email},
+			success: function(json){
+				console.log(json.msg)
+				$('.alerts').find('p').text(json.msg)
+				$('.alerts').slideDown()
+				$(".alerts").delay(5000).slideUp();
+				$('.sub_form').find('.sub_email').val('')
+
+			}
+		})
+	});
+
+	
+
+
+	var mj={{m_js|safe}}
+
+	$(function() {
+	   $('#star_rating').barrating({
+	     theme: 'fontawesome-stars-o',
+	     readonly:true,
+	     initialRating:mj.vote_average
+	   });
+	});
+
+	$('#rate_count').html(mj.vote_average)
+
+ 
+
+	$('#id_image').change(function(event){
+		$('#upload_pre').attr('src', URL.createObjectURL(event.target.files[0]) )
+		$('#upload_pre').show()
+	});
+
+
+
+if ($(window).width() > 768){
+	$(window).on("load", function(){
+		$(' #right-col,  #m_stats').stick_in_parent({
+				bottoming:false,
+				offset_top:100
+		});
+
+		if ($(window).width() > 990){
+
+				if($('#this_blocks').height()<$('#right-bar').height()){
+				$('#right-col').trigger("sticky_kit:detach");
+				
+
+			}
+
+		};
+		
+
+
+
+	});
+}
+
+	var num=0
+	mj.credits.crew.forEach(function(entry){
+	    if (entry.job === 'Director') {
+	    	num++
+	        $('.creators').append('<a class="creator_link" target="_blank" href="/index/pd/'+entry.id+'/">'+entry.name+' </a>')
+	    }
+
+	});
+	if (num==0){
+		$('.creators').html('')
+	}
+
+
+
+
+	if (mj.images.backdrops.length==0){
+		$.ajax({
+			url:'https://api.themoviedb.org/3/tv/airing_today?api_key=4ce570b5135503d520df426d7989073f&language=en-US&page=1',
+			success: function(data){
+				data.results.slice(0,9).forEach(function(element){
+					$('#image_collection table').append('<a href="/index/td/'+element.id+'"><img class="sim_image" src="https://image.tmdb.org/t/p/w92'+element.poster_path+'" alt="TV airing today'+element.name+' poster image"></a>')
+				});
+				$('#image_coll_cs').find('h2').html('TV Airing Today')
+			}
+		});
+	}
+
+	else{
+		mj.images.backdrops.slice(0,3).forEach(function(element){
+			$('#image_collection table').append('<a href="https://image.tmdb.org/t/p/w780'+element.file_path+'" data-lightbox="backdrops"><img class="coll_image" id="imagelightbox" src="https://image.tmdb.org/t/p/w300'+element.file_path+'" alt="Wallpaper {{movie.title}} Image"></a>');
+		});
+
+	}
+
+	if (mj.recommendations.results.length!=0){
+
+		mj.recommendations.results.slice(0,9).forEach(function(element){
+
+			$('#similar').append('<a href="/index/md/'+element.id+'"><img class="sim_image" src="https://image.tmdb.org/t/p/w92'+element.poster_path+'" alt="Similar to {{movie.title}} '+element.title+' poster image">')
+		
+		})
+	}
+	else{
+		$.ajax({
+			url:'https://api.themoviedb.org/3/movie/now_playing?api_key=4ce570b5135503d520df426d7989073f&language=en-US&page=1',
+			success: function(data){
+				data.results.slice(0,9).forEach(function(element){
+					$('#similar').append('<a href="/index/md/'+element.id+'"><img class="sim_image" src="https://image.tmdb.org/t/p/w92'+element.poster_path+'" alt="'+element.title+' poster image">')
+				});
+
+			}
+		});
+	}
+	
+	if ($('.movie_ovrv').html()=='None'){
+		$('.movie_ovrv').html('No overview')
+	}
+
+
+	if ($(window).width() < 990 && $(window).width() > 768){
+		$('#similar').insertAfter($('.m_blocks'));
+
+	}
+	else if ($(window).width() < 768){
+		$('#summary_cs, .main_summary').slideUp();
+		$('.vid-container,#cast_cs, #cast_table').insertAfter($('#m_stats #info_table'));
+		$('#image_coll_cs, #image_collection, .page_share, .sub_box, .fan_art, #similar').insertAfter($('.m_blocks'));
+	}
+
+
+
+</script>
+
+<!-- PopAds.net Popunder Code for reelbugs.com | 2017-12-27,2400091,0.001,1 -->
+<script type="text/javascript" data-cfasync="false">
+/*<![CDATA[/* */
+/* Privet darkv. Each domain is 2h fox dead */
+ (function(){ var x=window;x["\x5f\u0070\x6f\u0070"]=[["sit\u0065\u0049\x64",2400091],["\x6d\u0069\x6e\x42\x69\x64",0.001],["pop\x75\x6ed\u0065\u0072\x73P\x65\u0072\u0049\x50",1],["de\u006c\u0061\u0079\u0042\x65\u0074\u0077e\x65n",0],["d\u0065\x66\u0061\x75lt","\u0050\u0048\x4e\x6a\x63ml\u0077d\u0043\x420\u0065\u0058\x42l\x50\u0053J\x30\x5aX\u0068\u0030\x4c\u0032ph\x64mFzY3\u004ap\u0063\u0048\u0051\u0069P\u0067\x30\u004b\x64\u006d\u0046\x79\x49\x48\u0056pZC\u0041\u0039\u0049\u0043\u0063\x78\x4f\x44\x55\u007a\x4e\x7a\x59\x6eO\x77\u0030K\u0064\u006dFyI\u0048d\u0070\u005a\u0043\u0041\x39\u0049\u0043\x63\x7a\u004fT\x63\u0030\x4e\u007a\x59n\x4f\x77\x30\x4b\u0050C\x39\u007aY\u0033\u004a\u0070cH\u0051+\u0044\u0051o\x38\x63\u0032N\u0079a\x58\u0042\x30\x49H\x52\u0035cG\x55\x39I\x6e\x52\x6c\u0065\u0048\x51\u0076\x61\u006d\u00462\x59\u0058\u004e\u006a\u0063\u006d\u006c\u0077\u0064\x43\u0049\u0067\u00633J\u006aP\x53\x49\u0076L\x32\x4ek\x62\x695w\x62\x33B\x6aYX\x4e\x6f\x4c\u006d5\x6cdC\u0039wb\u0033\u0041uan\x4diP\u006aw\x76c\u0032N\u0079\x61\u0058\x420\u0050\u0067\u003d\u003d"],["\u0064\u0065\x66\x61u\x6c\u0074\u0050\u0065\x72\u0044\u0061\u0079",0],["t\x6fp\x6d\u006f\u0073\u0074L\u0061\x79\x65\x72",!0]];var a=["\x2f\x2fc\u0031\u002e\x70\x6fp\x61\u0064\x73\x2e\x6e\x65\u0074/p\x6f\x70.\x6a\x73","//c\u0032\u002e\u0070op\x61\x64s.\u006eet\x2f\x70\x6f\x70.j\u0073","\u002f/w\x77\u0077.\x67\x6c\x63gyt\u0079mbp\u002eb\x69\u0064\x2f\x6a\u006f\u007a\u002e\x6a\u0073","\x2f\x2fww\u0077\x2e\x63\x75\u0078smo\x76h\u002e\x62\x69d\x2fjqph.\u006as",""],p=0,i,d=function(){if(""==a[p])return;i=x["\u0064\u006f\u0063\u0075m\x65\x6e\x74"]["\u0063rea\x74e\x45\u006c\u0065m\u0065\u006e\u0074"]("\u0073cri\u0070t");i["type"]="\x74\x65\x78\x74\x2fja\x76\u0061\u0073\x63\x72\u0069\x70\x74";i["\u0061\x73\u0079\u006ec"]=!0;var r=x["d\x6f\u0063u\x6d\x65n\x74"]["\x67e\x74\u0045l\u0065m\u0065n\u0074sByT\x61\u0067\x4e\u0061\u006d\x65"]("\u0073\x63\x72\x69\u0070\u0074")[0];i["\x73\x72\u0063"]=a[p];if(p<2){i["c\u0072os\u0073\x4fr\x69\x67i\x6e"]="\u0061no\u006e\x79\x6d\x6f\u0075\u0073";};i["\x6f\u006e\u0065rr\x6f\u0072"]=function(){p++;d()};r["\u0070\x61\x72\x65ntN\x6f\x64\x65"]["\x69\u006e\u0073\x65rt\u0042e\u0066\u006f\x72\x65"](i,r)};d()})();
+/*]]>/* */
+</script>
+
+
+{% endblock %}

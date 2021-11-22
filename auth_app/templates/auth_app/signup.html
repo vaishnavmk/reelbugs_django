@@ -1,0 +1,33 @@
+{%extends 'auth_app/layout.html'%}
+{%block title%}
+  Blumury - Signup | Read, Write, Share, Relax
+{%endblock%}
+
+{%block body%}
+  <h1>Sign Up</h1>
+  <div id='warns'></div>
+  <div class='login_form'>
+    <form action="" method='post'>
+      {%csrf_token%}
+      {{form.as_p}}
+      <input type="submit" value="Sign Up">
+    </form>
+  </div>
+{%endblock%}
+{%block js%}
+	<script>
+		$('#id_username').on('change', function(){
+			var username=$(this).val();
+			$.ajax({
+				url:'{%url "username_taken"%}',
+				data: { 'username':username },
+				datatype:'json',
+				success: function(data) {
+					if (data.taken){
+						$('#warns').html('Username already taken');
+					}
+				}
+			});
+		});
+	</script>
+{%endblock%}

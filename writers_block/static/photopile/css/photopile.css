@@ -1,0 +1,48 @@
+
+/* Thumbnails */
+ul.photopile {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+ul.photopile li {
+    display: inline-block;
+    position: relative;
+    margin: 2px;
+    padding: 0;
+    -webkit-backface-visibility: hidden;
+}
+ul.photopile li a {
+    display: block;
+    padding: 2px;
+    outline: none;
+    text-decoration: none;
+    border: 1px solid #6F6F6F;
+    box-shadow: 0 0 20px #3D3D3D;
+}
+
+ul.photopile li a img {
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #6F6F6F;
+    width: 100%;
+    height: auto;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box; 
+    box-sizing:border-box;
+}
+
+#p_images img{
+    margin: 5px;
+    padding: 0;
+    border: 1px solid #6F6F6F;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box; 
+    box-sizing:border-box;
+    box-shadow: 0 0 20px #3D3D3D;
+}
+/* Photo container */

@@ -1,0 +1,75 @@
+
+
+.panel {
+    position: relative;
+    border-color: #421c52;
+    top:50px;
+  
+}
+
+@media only screen and (min-width: 768px){
+
+  .panel {
+      position: relative;
+      border-color: #421c52;
+      top:140px;
+      
+    
+  }
+
+
+}
+
+
+.erors{
+  position: relative;
+  top:20%;
+}
+
+.panel-default {
+ opacity: 1;
+ margin-top:30px;
+
+}
+.last-form {
+ margin-bottom:20px;
+ }
+.userinp {
+  margin-top: 20px;
+}
+
+.btn-login,.btn-login:hover, .btn-login:active, .btn-login:visited {
+  background: #421c52;
+  color: #fff !important;
+}
+
+
+.login_hd {
+  text-align: center; 
+  color: #fff; 
+  font-weight: bold; 
+  font-family: Roboto, Arial; 
+  font-size: 15px; 
+  vertical-align: middle; 
+  display: inline-block; 
+  margin: 0 auto; 
+  position: relative;
+  left: 43%;
+
+}
+
+.login_panel_hd {
+  background: #421c52;
+}
+
+.log_pan_ft {
+  background: #421c52;
+  color: #fff;
+  font-family: Roboto;
+}
+
+.log_pan_ft a{
+  color: #fff
+}
+
+

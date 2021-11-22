@@ -1,0 +1,102 @@
+{% extends 'writers_block/base.html' %}
+{% load static %}
+{% block extrahead %}
+		<meta name="description" content="ReelBugs is a free internet space for movie buffs and tv series lovers and viewers to discuss, analyse and argue about their favorite movies, shows and celebrities." />
+{% endblock %}
+{% block title %}  ReelBugs - The Best Site For New Movies {% endblock %}
+{% block style %}
+{% endblock %}
+{% block body %}
+	<div style="position: fixed;">
+	<img src="{% static 'images/back.jpg' %}" style="opacity: 0.15; width: 100vw;height: 100vh; overflow: hidden; background-repeat: repeat;">
+	</div>
+	<div class="container" style="margin-bottom: 50px;">
+		<div class="row" style="height: 600px;">
+		<div class="col-xs-6" style="">
+		<hr style="border-top: 1px solid #333;">
+		<h2 class="index_cats" style=""> Movies </h2><br/>
+		<hr style="border-top: 1px solid #333;">
+		{% for i in movies.results|slice:":15" %}
+		<a href="/index/md/{{i.id}}"> <img class="polaroid" src="https://image.tmdb.org/t/p/w154{{i.poster_path}}" alt="{{i.title}} poster image"> </a>
+		{% endfor %}
+		</div>
+		<div class="col-xs-6" style="">
+		<hr style="border-top: 1px solid #333;">
+		<h2 class="index_cats"> TV </h2><br/>
+		<hr style="border-top: 1px solid #333;">
+		{% for i in tvs.results|slice:":15" %}
+		<a href="/index/td/{{i.id}}"> <img class="polaroid" src="https://image.tmdb.org/t/p/w154{{i.poster_path}}" alt="{{i.name}} poster image"> </a>
+		{% endfor %}
+		</div>
+		</div>
+
+
+	</div>
+	<script type="text/javascript">
+
+	$('#eac-container-main_search').mCustomScrollbar({
+			theme:'dark',
+		});
+
+		var m_srch=$('#main_search')
+		var options={
+		  url:function(phrase){
+		    return 'https://api.themoviedb.org/3/search/multi?api_key=4ce570b5135503d520df426d7989073f&query='+phrase.replace(/\s+/,'+')        
+		  },
+		  getValue:function(element) {
+		    if (element.title){
+		      return element.title;
+		    }
+		    else {
+		      return element.name;
+		    }
+		  },
+		  listLocation: 'results',
+		  theme: "round",
+		  requestDelay: 500,
+		  list: {
+		      maxNumberOfElements: 10,
+
+		      showAnimation: {
+		            type: "fade", //normal|slide|fade
+		            time: 400,
+		            callback: function() {}
+		          },
+
+		          hideAnimation: {
+		            type: "slide", //normal|slide|fade
+		            time: 400,
+		            callback: function() {}
+		          },
+
+		      onChooseEvent: function(){
+		        var movie_id=m_srch.getSelectedItemData().id;
+		        var g=m_srch.getSelectedItemData().media_type[0]+'d'
+		        window.location.href='/index/'+g+'/'+movie_id
+		      }
+		    },
+		  template: {
+		    type: 'custom',
+		    method: function(value, item){
+		      var t=item.media_type
+		      if (t=='movie'){
+		        var j= item.poster_path ? 'https://image.tmdb.org/t/p/w92'+item.poster_path : '/static/images/search_back.jpeg'
+		        return '<a href="/index/md/'+item.id+'" style="text-decoration:none; color:#000; position:relative"><img src="'+j+'" class="result_img" style="max-width:45px"><span class="search_title">'+item.title+'</span><span class="search_date">'+item.release_date+'</span><span class="search_typ">Movie</span></a>'
+		      }
+		      else if (t=='tv'){
+		        var j= item.poster_path ? 'https://image.tmdb.org/t/p/w92'+item.poster_path : '/static/images/search_back.jpeg'
+		        return '<a href="/index/td/'+item.id+'" style="text-decoration:none; color:#000; position:relative"><img src="'+j+'" class="result_img" style="max-width:45px"><span class="search_title">'+item.name+'</span><span class="search_date">'+item.first_air_date+'</span><span class="search_typ">TV</span></a>'
+		      }
+		      else {
+		        var j= item.profile_path ? 'https://image.tmdb.org/t/p/w92'+item.profile_path : '/static/images/search_back.jpeg'
+		        return '<a href="/index/pd/'+item.id+'" style="text-decoration:none; color:#000"><img src="'+j+'" class="result_img" style="max-width:45px"><span class="search_title">'+item.name+'</span><span class="search_typ">Person</span>'
+		      }
+		    }        
+		    }
+		  }
+		m_srch.easyAutocomplete(options);
+
+	$('body').css('background', '#eee');
+	</script>
+
+{% endblock %}

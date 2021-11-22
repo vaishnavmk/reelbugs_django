@@ -1,0 +1,80 @@
+.notif_head {
+  text-align: center; 
+  font-family: Space Mono, Arial
+}
+
+.all_notifs {
+  list-style: none;
+  margin-top: 30px;
+}
+
+
+.all_notifs li {
+  border-bottom: 1px solid #eee;
+  padding-top: 10px; 
+  min-height: 70px; 
+  background: #fff;
+  cursor: pointer; color: hand;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.all_notifs li:hover {
+  background: #eee;
+}
+
+
+.all_notifs li:first-child {
+  border-top: 1px solid #eee
+}
+
+.not_thumb {
+  float: left; 
+  border-radius: 30px;
+
+}
+.notif_tex {
+  display: inline-block; 
+  overflow-wrap: break-word; 
+  font-size: 1em;
+  padding: 3px; 
+  font-family: Roboto, Arial;
+  margin-top:7px;
+  margin-right: 30px;
+}
+
+.notif_tex a {
+  color: #000
+}
+
+
+@media only screen and (max-width: 767px) {
+
+   .notif_text {
+      font-size: 0.7em;
+   }
+
+   li span {
+    font-size: 0.5em;
+   }
+
+}
+
+
+li span {
+  display: inline-block;
+  font-size: 0.7em;
+  font-family: Roboto, Arial;
+  white-space: nowrap;
+  padding-bottom: 10px;
+}  
+
+.active_notif {
+  background: #f7f7f7 !important;
+}
+
+
+
+
+
+
+

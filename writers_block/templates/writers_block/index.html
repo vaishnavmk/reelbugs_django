@@ -1,0 +1,167 @@
+{%extends base%}
+
+{%load block_tags%}
+{%load static%}
+{%block title%}
+Blumury | Movies and Coffee
+{%endblock%}
+{%block extrahead%}
+<meta property="og:type" content="article" />
+<meta itemprop="og:headline" content="The Movie Buff Social Network" />
+<meta itemprop="og:description" content="The only fun social network for movie buffs of sizes" />
+<meta property="og:image" content="blumury.com{% static 'images/blumury_post.png' %}" />
+{%endblock%}
+{%block body%}
+  <div class="container block_post">
+    <div class="modal fade" id="block_writer" role="dialog">
+      <div class="modal-dialog" style="top:25%; position: relative;">
+        <div class="modal-content block_modal" style="background: #421c52; border-radius: 5px; padding: 10px; padding-bottom: 0px">
+        <div class="modal-body" style="position: relative; padding: 15px;">
+          <form action="{% url 'write_block' %}", method="post" enctype="multipart/form-data">
+        	{%csrf_token%}
+        	{{block_form.content}}
+
+          <script type="text/javascript">
+            $(document).ready(function() {
+              $("#id_content").emojioneArea();
+            });
+          </script>
+
+          {{block_form.media}}
+          <div class="modal-footer" style="border-top: none; height: 60px; position: relative;">   
+            <ul class="list-inline block_btns" style="list-style: none; ">
+            <li class="movie_select">
+            <input type="text" placeholder="Movie" />
+            {{block_form.movie_id}}
+            </li>
+            <li style="float: left;">
+            <label class="btn block_cam"><i class="fa fa-camera" style="font-size: 19px;"></i>
+            <input class="btn" id="id_image" name="image" type="file" hidden />
+            </label>
+            </li>
+            <li>
+            <button class="btn block_share" type="submit" style=>
+            <i class="fa fa-share" style="font-size: 19px;"></i></button>
+            </li>
+            </ul>
+          </div>
+          </form>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container main-content">
+    <div class="row">
+      <div class="hidden-xs hidden-sm col-md-1">
+        <div class="side_stuff">
+          <ul class="btns" style="list-style: none;">
+            <li><a class="btn-hov" href="javascript:void(0);" data-placement="right" data-toggle="tooltip" title="Pin Post">
+            <button type="button" class="btn btn-default" id="myBtn"><i class="material-icons">filter_frames</i></button></a></li>
+            <li><a class="btn-hov" href="{%url 'write_piece'%}" data-placement="right" data-toggle="tooltip" title="Write Review!">
+            <button type="button" class="btn btn-default" id="pBtn"><i class="material-icons">fingerprint</i></button></a></li>
+            <li><a class="btn-hov" href="{%url 'lucky_read'%}" data-placement="right" data-toggle="tooltip" title="Lucky read!">
+            <button type="button" class="btn btn-default" id="lBtn"><i class="material-icons">explore</i></button></a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="col-xs-12 col-md-6 block_col">
+        <div class="col-md-12">
+        {%show_blocks%}
+        </div>
+      </div>
+      
+      <div class="col-xs-12 col-md-4 col-md-offset-1 hidden-xs hidden-sm stories sidebar" style="; padding: 0px !important; border-radius: 10px;">
+
+        <div class="sidebar-inner" style="padding: 20px;padding-top: 0px; margin: 0 auto;padding-bottom: 10px; border-radius: 10px; width: 90%; height: 100%;">
+        <div class="story_hd" style="padding:5px; border-radius: 10px; margin-bottom: 10px">
+        <a href="{%url 'pieces_list'%}"><h4 style="text-align: center; color: #000;">Top Reviews</h4></a>
+        </div>
+        {%for piece in pieces%}
+            <div class="row" style="margin-bottom: 30px; height: 185px; border-radius: 10px; border: 1px solid #eee; position:relative; ">
+
+              <div class="col-xs-12" style="background: #fefefe; border-radius: 5px; padding-top: 10px; padding-bottom: 10px">
+              <a href="{%url 'read_piece' piece_slug=piece.slug%}">
+                <img src="{{piece.thumb.url}}" class="pull-left" height="95" style="display: block; margin: 0 auto; border:3px solid #9336a3; border-radius: 10px; margin-top: 5px;">
+              </a>
+              <a href="{%url 'read_piece' piece_slug=piece.slug%}" style="float: right; display: block;text-decoration: none; color: #000; width: 65%; margin-top: 5px;">
+                <p style=" overflow-wrap: break-word; word-break: break-all; font-size: 12px;">{{piece.summary|truncatechars:130}}</p>
+              </a>
+
+              <div>
+              <a href="{%url 'profile_view' pk=piece.author.id%}">
+              <p style="float: right; font-family: Space Mono, Arial; color: #9336a3">{{piece.author.username}}</p>
+              </a>
+              </div>
+
+              </div>
+
+            
+            <div class="col-xs-12">
+              <hr style="margin-top:0px;margin-bottom: 0px;border-color: #b794ce">
+              <a href="{%url 'read_piece' piece_slug=piece.slug%}">
+              <p style="padding: 2px; padding-top: 7px;
+               text-align: center; color: #421c52; border-radius: 10px; overflow-wrap: break-word; word-break: break-all; font-size: 17px">{{piece.title|truncatechars:70}}</p>
+              </a>
+              </div>
+
+            </div>
+
+        {%endfor%}
+
+      </div>
+      </div>
+        <div class="mob-btns col-xs-12 hidden-md hidden-lg">
+          <ul class="list-inline mob-list">
+            <li>
+            <button type="button" class="btn btn-default" id="mobBtn"><i class="material-icons">filter_frames</i></button></li>
+            <li><a href="{% url 'write_piece' %}">
+            <button type="button" class="btn btn-default"><i class="material-icons">fingerprint</i></button></li>
+            <li><a href="{% url 'lucky_read' %}">
+            <button type="button" class="btn btn-default"><i class="material-icons">explore</i></button></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{%endblock%}
+{%block js%}
+  <script type="text/javascript" src="{% static 'js/blocks.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/chat.js' %}"></script>
+
+  
+
+  <script type="text/javascript">
+
+    
+
+    $(".sidebar").stickySidebar({
+      topSpacing: 20,
+      bottomSpacing: 20,
+      containerSelector: '.main-content',
+      innerWrapperSelector: '.sidebar__inner'
+    }); 
+
+  
+    $(document).ready(function(){
+      $("#myBtn, #mobBtn").click(function(){
+          $("#block_writer").modal();
+        });
+
+      $('#block_writer').on('shown.bs.modal', function () {
+          $('#id_content').focus();
+      })
+    });
+
+    $('[data-toggle="tooltip"]').tooltip({trigger:'hover'});
+    $("#myBtn").click(function(){
+            $("#block_writer").modal();
+    }); 
+
+
+  </script>
+
+{%endblock%}

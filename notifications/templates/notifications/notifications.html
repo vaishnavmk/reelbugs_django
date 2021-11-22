@@ -1,0 +1,122 @@
+{% extends 'writers_block/base.html' %}
+{% load static %}
+
+{% load humanize %}
+
+{% block title %} Notifications {% endblock %}
+
+
+{%block body%}
+  <h1 class="notif_head">Notifications</h1>
+  <div class="container" padding: 0" >
+  <div class="row">
+  <div class="col-xs-12 col-md-3"></div>
+  <div class="col-xs-12 col-md-6" style="padding-left: 0 !important">
+  <ul class="all_notifs">
+    {%for notification in notifs%}
+      <li class="clearfix">
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-3 col-sm-1">
+              <a href="{%url 'profile_view' pk=notification.from_user.id%}">
+              <img class="not_thumb" src="{{ notification.from_user.person.get_thumb}}">
+            </div>
+            <div class="col-xs-9 col-sm-8">
+              <p class="notif_tex">{{notification|safe}}</p>
+              <span class="text-muted notif_time">( {{notification.at_time|naturaltime}} )</span>
+            </div>
+            <div class="col-sm-3">
+            </div>
+          </div>
+        </div>
+      </li>
+    {%empty%}
+      <li><p class="text-muted" style="text-align: center;"> No notifications yet </p></li>
+    {%endfor%}
+  </ul>
+  </div>
+  <div class="col xs-12 col-md-3" style="height: 800px;">    
+  </div>
+  </div>
+  </div>
+<script>
+
+  $('.clearfix').click(function(){
+    var l=$(this).find('.notif_tex').find('a').eq(2).attr('href')
+    $(location).attr('href',l);
+  });
+</script>
+
+<script type="text/javascript">
+    var n=$('.notif_time')
+    for (i=0;i<n.length;i++) {
+      n[i].innerHTML=n[i].innerHTML.replace("ago","");
+      n[i].innerHTML=n[i].innerHTML.replace(/an/,"1");
+      n[i].innerHTML=n[i].innerHTML.replace(/&nbsp;hours?[\w\s\d]*?/, 'h ');
+      n[i].innerHTML=n[i].innerHTML.replace(/&nbsp;seconds?[\w\s\d]*/,"s ");
+      n[i].innerHTML=n[i].innerHTML.replace(/&nbsp;minutes?[\w\s\d]*/,"m ");
+      n[i].innerHTML=n[i].innerHTML.replace(/&nbsp;days?[\w\s\d]*/,"d ");
+  };
+
+  var m_srch=$('#main_search')
+  var options={
+    url:function(phrase){
+      return 'https://api.themoviedb.org/3/search/multi?api_key=4ce570b5135503d520df426d7989073f&query='+phrase.replace(/\s+/,'+')        
+    },
+    getValue:function(element) {
+      if (element.title){
+        return element.title;
+      }
+      else {
+        return element.name;
+      }
+    },
+    listLocation: 'results',
+    theme: "round",
+    requestDelay: 500,
+    list: {
+        maxNumberOfElements: 10,
+
+        showAnimation: {
+              type: "fade", //normal|slide|fade
+              time: 400,
+              callback: function() {}
+            },
+
+            hideAnimation: {
+              type: "slide", //normal|slide|fade
+              time: 400,
+              callback: function() {}
+            },
+
+        onChooseEvent: function(){
+          var movie_id=m_srch.getSelectedItemData().id;
+          var g=m_srch.getSelectedItemData().media_type[0]+'d'
+          window.location.href='/index/'+g+'/'+movie_id
+        }
+      },
+    template: {
+      type: 'custom',
+      method: function(value, item){
+        var t=item.media_type
+        if (t=='movie'){
+          var j= item.poster_path ? 'https://image.tmdb.org/t/p/w92'+item.poster_path : '/static/images/search_back.jpeg'
+          return '<a href="/index/md/'+item.id+'" style="text-decoration:none; color:#000; position:relative"><img src="'+j+'" class="result_img" style="max-width:45px"><span class="search_title">'+item.title+'</span><span class="search_date">'+item.release_date+'</span><span class="search_typ">Movie</span></a>'
+        }
+        else if (t=='tv'){
+          var j= item.poster_path ? 'https://image.tmdb.org/t/p/w92'+item.poster_path : '/static/images/search_back.jpeg'
+          return '<a href="/index/td/'+item.id+'" style="text-decoration:none; color:#000; position:relative"><img src="'+j+'" class="result_img" style="max-width:45px"><span class="search_title">'+item.name+'</span><span class="search_date">'+item.first_air_date+'</span><span class="search_typ">TV</span></a>'
+        }
+        else {
+          var j= item.profile_path ? 'https://image.tmdb.org/t/p/w92'+item.profile_path : '/static/images/search_back.jpeg'
+          return '<a href="/index/pd/'+item.id+'" style="text-decoration:none; color:#000"><img src="'+j+'" class="result_img" style="max-width:45px"><span class="search_title">'+item.name+'</span><span class="search_typ">Person</span>'
+        }
+      }        
+      }
+    }
+  m_srch.easyAutocomplete(options);
+
+
+</script>
+
+{%endblock%}

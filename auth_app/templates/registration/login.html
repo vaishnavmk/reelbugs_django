@@ -1,0 +1,166 @@
+{%extends 'auth_app/layout.html'%}
+{%load static%}
+{%block title%}Login | Blumury | The Movie Buffs Network{%endblock%}
+{%block style%}
+body { 
+  background: url('{% static 'images/cov.jpg' %}') no-repeat center center fixed; 
+ -webkit-background-size: cover;
+ -moz-background-size: cover;
+ -o-background-size: cover;
+ background-size: cover;
+}
+
+h1 {
+  height: 70px;
+  width: 100%;
+  font-size: 18px;
+  background: #421c52;
+  color: white;
+  line-height: 150%;
+  border-radius: 3px 3px 0 0;
+  box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.2);
+}
+
+form {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 100px auto 0;
+  box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);
+  padding-bottom: 40px;
+  border-radius: 3px;
+  background:#fff;
+}
+
+form p {
+  box-sizing: border-box;
+  padding: 20px;
+  font-size:30px;
+  font-family:Just Another Hand;
+  text-align: center
+}
+
+input {
+  margin: 20px;
+  width: 85%;
+  display: block;
+  border: none;
+  padding: 10px 0;
+  border-bottom: solid 1px #421c52;
+  -webkit-transition: all 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
+          transition: all 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
+  background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 96%, #421c52 4%);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 96%, #421c52 4%);
+  background-position: -400px 0;
+  background-size: 400px 100%;
+  background-repeat: no-repeat;
+  color: #0e6252;
+}
+
+
+input:focus, input:valid {
+  box-shadow: none !important;
+  outline: none;
+  background-position: 0 0;
+}
+input:focus::-webkit-input-placeholder, input:valid::-webkit-input-placeholder {
+  color: #421c52;
+  font-size: 11px;
+  -webkit-transform: translateY(-20px);
+          transform: translateY(-20px);
+  visibility: visible !important;
+}
+button {
+  border: none;
+  background: #421c52;
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 6px;
+  width: 85%;
+  color: white;
+  margin-left: 25px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
+}
+button:hover {
+  -webkit-transform: translateY(-3px);
+      -ms-transform: translateY(-3px);
+          transform: translateY(-3px);
+  box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.2);
+}
+ 
+The magic happens in a few lines of code for the input:focus and input:valid. The CSS transform property plays a crucial role to achieve this little instant feedback effect.
+
+input:focus::-webkit-input-placeholder, input:valid::-webkit-input-placeholder {
+  color: #421c52;
+  font-size: 11px;
+  -webkit-transform: translateY(-20px);
+          transform: translateY(-20px);
+  visibility: visible !important;
+}
+
+{%endblock%}
+{%block body%}
+
+<div class="container">
+  <div class="row">
+  <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4" id="#login_btns">
+    <div style="position: relative; top: 0px;">
+    <div style="position: absolute; top: -25px; right: -25px; background: #421c52; color: #fff; padding: 5px;border-radius: 50%; width: 60px; height: 60px; "><img src="{% static 'images/blogo.png' %}" style="height: 55px; position: relative;bottom: 2px;"></div>
+    <form action="{%url 'signin' %}" method="post">
+    {% csrf_token %}
+    <p>Blumury Signin</p>
+  
+    <div style="display: block;  margin:0 auto;">
+
+    <button class="btn-si btn-google" style="margin-bottom: 10px; font-family: Roboto;">Continue with Google</button>
+    <button class="btn-si btn-facebook" style="margin-bottom: 10px; font-family: Roboto">Continue with Facebook </button>
+    <button class="btn-si btn-twitter" style="font-family: Roboto;">Continue with Twitter </button>
+
+     </div>
+    
+    </form>
+    </div>
+  </div>
+  </div>
+</div>
+
+{%endblock%}
+{%block js%}
+<script type="text/javascript">
+  $('.btn-facebook').click(function(event){
+    event.preventDefault()
+   window.location.href="{% url 'social:begin' 'facebook' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}";
+})
+  $('.btn-twitter').click(function(event){
+    event.preventDefault()
+   window.location.href="{% url 'social:begin' 'twitter' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}";
+})
+  $('.btn-google').click(function(event){
+    event.preventDefault()
+   window.location.href="{% url 'social:begin' 'google-oauth2' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}";
+})
+
+
+</script>
+<script type="text/javascript">
+  $('.form-horizontal').submit(function(event){
+    event.preventDefault()
+    u=$('#id_username').val();
+    p=$('#id_password').val();
+    if (u && p){
+        $.ajax({
+          url:"{%url 'check_creds'%}",
+          data:{'username':u, 'password':p},
+          success: function(data){
+            if (data.creds=='0'){
+              $('.erors').slideDown(200);
+              console.log(data.creds);
+            }
+            else{
+              $('.form-horizontal').unbind('submit').submit();
+            }
+          }
+        });
+    }
+  });
+</script>
+{%endblock%}

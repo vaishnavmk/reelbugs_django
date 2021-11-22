@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+   <title>VM Carousel jQuery Plugin Demos</title>
+   <!-- Latest compiled and minified CSS -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+         integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+   <!-- Optional theme -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+         integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+   <!-- Font Awesome -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+
+   <link rel="stylesheet" type="text/css" href="dist/jquery.vm-carousel.css">
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+
+   <style>
+      body {
+         background-color:#229F8E;
+         color:#fff;
+         font-family:'Roboto';
+      }
+
+      h2 {
+         margin-bottom: 40px;
+         margin-top: 40px;
+      }
+
+      .nav i.fa {
+         font-size: 18px;
+      }
+
+      .vmc-centered{ padding: 10px 0; }
+      .vmc-centered img { transition: all 0.3s ease; }
+      .vmc-centered .vmc_active img { transform: scale(1.2); }
+      .container { margin-top:150px;}
+   </style>
+
+</head>
+<body>
+<div id="jquery-script-menu">
+<div class="jquery-script-center">
+<ul>
+<li><a href="http://www.jqueryscript.net/slider/Responsive-Multi-slide-Image-Carousel-Plugin-VM-Carousel.html">Download This Plugin</a></li>
+<li><a href="http://www.jqueryscript.net/">Back To jQueryScript.Net</a></li>
+</ul>
+<div class="jquery-script-ads"><script type="text/javascript"><!--
+google_ad_client = "ca-pub-2783044520727903";
+/* jQuery_demo */
+google_ad_slot = "2780937993";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script></div>
+<div class="jquery-script-clear"></div>
+</div>
+</div>
+
+<div class="container">
+
+   <h1>VM Carousel jQuery Plugin Demos</h1>
+
+   <h3>Centered mode, initial slide index: 2</h3>
+
+   <ul class="vmcarousel-centered vmc-centered">
+      <li><img src="https://unsplash.it/500/281?image=579" alt="" width="200"></li>
+      <li><img src="https://unsplash.it/500/281?image=577" alt="" width="200"></li>
+      <li><img src="https://unsplash.it/500/281?image=604" alt="" width="200"></li>
+      <li><img src="https://unsplash.it/500/281?image=611" alt="" width="200"></li>
+      <li><img src="https://unsplash.it/500/281?image=628" alt="" width="200"></li>
+      <li><img src="https://unsplash.it/500/281?image=643" alt="" width="200"></li>
+   </ul>
+
+
+   <h3>Centered infinite mode, initial slide index: 1</h3>
+
+   <ul class="vmcarousel-centered-infitine vmc-centered">
+      <li><img src="https://unsplash.it/500/281?image=579" alt="" width="200"></li>
+      <li><img src="https://unsplash.it/500/281?image=577" alt="" width="200"></li>
+      <li><img src="https://unsplash.it/500/281?image=604" alt="" width="200"></li>
+      <li><img src="https://unsplash.it/500/281?image=611" alt="" width="200"></li>
+      <li><img src="https://unsplash.it/500/281?image=628" alt="" width="200"></li>
+      <li><img src="https://unsplash.it/500/281?image=643" alt="" width="200"></li>
+   </ul>
+
+
+   <h3>Normal mode</h3>
+
+   <ul class="vmcarousel-normal">
+      <li><img src="https://unsplash.it/500/281?image=579" alt="" width="200"></li>
+      <li><img src="https://unsplash.it/500/281?image=577" alt="" width="200"></li>
+      <li><img src="https://unsplash.it/500/281?image=604" alt="" width="200"></li>
+      <li><img src="https://unsplash.it/500/281?image=611" alt="" width="200"></li>
+      <li><img src="https://unsplash.it/500/281?image=628" alt="" width="200"></li>
+      <li><img src="https://unsplash.it/500/281?image=643" alt="" width="200"></li>
+   </ul>
+
+   <h2>How to use</h2>
+
+   <pre>
+
+   </pre>
+
+   <h2>Full options list (default values)</h2>
+
+   <pre>
+   </pre>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="dist/jquery.vm-carousel.js"></script>
+<script>
+   jQuery(function($){
+      $('.vmcarousel-centered').vmcarousel({
+         centered: true,
+         start_item: 2,
+         autoplay: false,
+         infinite: false
+      });
+
+      $('.vmcarousel-centered-infitine').vmcarousel({
+         centered: true,
+         start_item: 1,
+         autoplay: false,
+         infinite: true
+      });
+
+      $('.vmcarousel-normal').vmcarousel({
+         centered: false,
+         start_item: 0,
+         autoplay: false,
+         infinite: false
+      });
+   });
+</script>
+</body><script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36251023-1']);
+  _gaq.push(['_setDomainName', 'jqueryscript.net']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</html>

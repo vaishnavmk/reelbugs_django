@@ -1,0 +1,174 @@
+{% extends 'writers_block/base.html' %}
+{% block title %}
+Feature Your Fan Art - ReelBugs
+{% endblock %}
+{% block style %}
+.form-control{
+	border:none;
+}
+{% endblock %}
+{% block body %}
+	<div class="container">
+	<h1 style="text-align: center; font-family: Josefin Sans">Link Your Fan Art</h1><br>
+	<div class="row">
+	<div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+	<p style="font-family: Roboto, Arial">ReelBugs is launching a Fan Art Column where artists can feature links to their Fan Art pieces for a specific movie or TV series. The piece thumbnail will be linked to the artist's DeviantArt page or 'Deviation' Currently we only accept DeviantArt page links.</p>
+	<p style="font-family: Roboto, Arial"> Feel free to submit links to your original Fan Art, by filling the form below. Please refrain from submitting copyrighted images by other artists. Thanks! </p><br>
+	<p style="font-family: Roboto, Arial">
+
+	<form class="art_form" method="POST" action="{% url 'submit_fanart' %}">
+	{% csrf_token %}
+	<label for=""></label>
+	<input class="form-control" type="text" id="form_search" style="" placeholder="Search for any Movie/TV Series" >
+	<input type="hidden" name="topic_id" id="id_topic_id">
+	<input type="hidden" name="topic_type" id="id_topic_type">
+	<label for="id_img"></label>
+		<input type="url" name="img" class="form-control" placeholder="Link to Your Fan Art Deviation Page" id="id_img" required/>
+	<label for="id_email"></label>
+		<input type="email" name="email" class="form-control" placeholder="Your Email" id="id_email" required/>
+	<label for="submit_btn"></label>
+		<button id="submit_btn" type="submit" class="form-control btn" style="background-color: #200f27; color: #fff; border-radius: 50%">Submit</button>
+	</form>
+	</p>
+	</div>
+	</div>
+	</div>
+	<script type="text/javascript">
+
+		  var m_srch=$('#main_search')
+		  var f_srch=$('#form_search')
+		  var options={
+		    url:function(phrase){
+		      return 'https://api.themoviedb.org/3/search/multi?api_key=4ce570b5135503d520df426d7989073f&query='+phrase.replace(/\s+/,'+')        
+		    },
+		    getValue:function(element) {
+		      if (element.title){
+		        return element.title;
+		      }
+		      else {
+		        return element.name;
+		      }
+		    },
+		    listLocation: 'results',
+		    theme: "round",
+		    requestDelay: 500,
+		    list: {
+		        maxNumberOfElements: 10,
+
+		        showAnimation: {
+		              type: "fade", //normal|slide|fade
+		              time: 400,
+		              callback: function() {}
+		            },
+
+		            hideAnimation: {
+		              type: "slide", //normal|slide|fade
+		              time: 400,
+		              callback: function() {}
+		            },
+
+		        onChooseEvent: function(){
+		          var movie_id=m_srch.getSelectedItemData().id;
+		          var g=m_srch.getSelectedItemData().media_type[0]+'d'
+		          window.location.href='/index/'+g+'/'+movie_id
+		        }
+		      },
+		    template: {
+		      type: 'custom',
+		      method: function(value, item){
+		        var t=item.media_type
+		        if (t=='movie'){
+		          var j= item.poster_path ? 'https://image.tmdb.org/t/p/w92'+item.poster_path : '/static/images/search_back.jpeg'
+		          return '<a href="/index/md/'+item.id+'" style="text-decoration:none; color:#000; position:relative"><img src="'+j+'" class="result_img" style="max-width:45px"><span class="search_title" alt="'+item.title+' poster">'+item.title+'</span><span class="search_date">'+item.release_date+'</span><span class="search_typ">Movie</span></a>'
+		        }
+		        else if (t=='tv'){
+		          var j= item.poster_path ? 'https://image.tmdb.org/t/p/w92'+item.poster_path : '/static/images/search_back.jpeg'
+		          return '<a href="/index/td/'+item.id+'" style="text-decoration:none; color:#000; position:relative"><img src="'+j+'" class="result_img" style="max-width:45px"><span class="search_title" alt="'+item.name+' poster">'+item.name+'</span><span class="search_date">'+item.first_air_date+'</span><span class="search_typ">TV</span></a>'
+		        }
+		        else {
+		          var j= item.profile_path ? 'https://image.tmdb.org/t/p/w92'+item.profile_path : '/static/images/search_back.jpeg'
+		          return '<a href="/index/pd/'+item.id+'" style="text-decoration:none; color:#000"><img src="'+j+'" class="result_img" style="max-width:45px" alt="'+item.name+' profile"><span class="search_title">'+item.name+'</span><span class="search_typ">Person</span>'
+		        }
+
+		      }        
+		      }
+		    }
+
+
+
+		    var options1={
+		    url:function(phrase){
+		      return 'https://api.themoviedb.org/3/search/multi?api_key=4ce570b5135503d520df426d7989073f&query='+phrase.replace(/\s+/,'+')        
+		    },
+		    getValue:function(element) {
+		      if (element.title){
+		        return element.title;
+		      }
+		      else {
+		        return element.name;
+		      }
+		    },
+		    listLocation: 'results',
+		    theme: "round",
+		    requestDelay: 500,
+		    list: {
+		        maxNumberOfElements: 10,
+
+		        showAnimation: {
+		              type: "fade", //normal|slide|fade
+		              time: 400,
+		              callback: function() {}
+		            },
+
+		            hideAnimation: {
+		              type: "slide", //normal|slide|fade
+		              time: 400,
+		              callback: function() {}
+		            },
+
+		        onChooseEvent: function(){
+		          var movie_id=f_srch.getSelectedItemData().id;
+		          var type=f_srch.getSelectedItemData().media_type;
+
+		          $('#id_topic_id').val(movie_id)
+		          $('#id_topic_type').val(type)
+		        }
+		      },
+		    template: {
+		      type: 'custom',
+		      method: function(value, item){
+		        var t=item.media_type
+		        if (t=='movie'){
+		          var j= item.poster_path ? 'https://image.tmdb.org/t/p/w92'+item.poster_path : '/static/images/search_back.jpeg'
+		          return '<a style="text-decoration:none; color:#000; position:relative"><img src="'+j+'" class="result_img" style="max-width:45px"><span class="search_title" alt="'+item.title+' poster">'+item.title+'</span><span class="search_date">'+item.release_date+'</span><span class="search_typ">Movie</span></a>'
+		        }
+		        else if (t=='tv'){
+		          var j= item.poster_path ? 'https://image.tmdb.org/t/p/w92'+item.poster_path : '/static/images/search_back.jpeg'
+		          return '<a style="text-decoration:none; color:#000; position:relative"><img src="'+j+'" class="result_img" style="max-width:45px"><span class="search_title" alt="'+item.name+' poster">'+item.name+'</span><span class="search_date">'+item.first_air_date+'</span><span class="search_typ">TV</span></a>'
+		        }
+		        else {
+		          var j= item.profile_path ? 'https://image.tmdb.org/t/p/w92'+item.profile_path : '/static/images/search_back.jpeg'
+		          return '<a style="text-decoration:none; color:#000"><img src="'+j+'" class="result_img" style="max-width:45px" alt="'+item.name+' profile"><span class="search_title">'+item.name+'</span><span class="search_typ">Person</span></a>'
+		        }
+
+		      }        
+		      }
+		    }
+
+
+		  m_srch.easyAutocomplete(options);
+		  f_srch.easyAutocomplete(options1);
+
+
+	</script>
+
+	{% if alert %}
+		<script type="text/javascript">
+			$('.alerts').find('p').text('{{alert}}')
+			$('.alerts').slideDown()
+			$('.alerts').slideDown()
+			$(".alerts").delay(7000).slideUp();
+		</script>
+	{% endif %}
+
+{% endblock %}

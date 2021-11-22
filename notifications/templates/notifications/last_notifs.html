@@ -1,0 +1,11 @@
+{%load humanize%}
+<ul style="list-style: none;">
+	{%for notification in notifs%}
+		<li class="clearfix">
+		<img src="{{ notification.from_user.person.com_thumb.url}}" style="float: left; border-radius: 30px;">
+		<p style="overflow-wrap: break-word;">{{notification|safe}}</p>
+	{%empty%}
+		<li><p class="text-muted" style="position: relative; left: 20px;"> No new notifications </p></li>
+	{%endfor%}	
+	<li style="text-align: center"><a href="{% url 'notifications' %}">See All</a></li>
+</ul>

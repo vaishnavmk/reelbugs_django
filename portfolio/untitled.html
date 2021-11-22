@@ -1,0 +1,10 @@
+{%extends 'writers_block/basic.html'%}
+{%block title%}
+Write
+{%endblock%}
+{%block body%}
+  <form method='post' action=''>
+    {{form.as_p}}
+    <input type="submit" value="submit">
+  </form>
+{%endblock%}

@@ -1,0 +1,124 @@
+{%extends 'writers_block/base.html'%}
+{%block title%}
+	Review Manager
+{%endblock%}
+{%block body%}
+	<div class="container">
+		<div class="modal fade" role="dialog">
+		  <div class="modal-dialog">
+		  <div class="modal-content">
+		    <div class="modal-header" style="background: #421c52; height: 40px; border-top-left-radius: 5px; border-top-right-radius: 5px;">
+		    <p style="color: #fff;">Piece Deletion Confirm</p>
+		    </div>
+		    <div class="modal-body">
+		    <p>You sure you want to delete this piece? You cannot revert this action.</p>
+		    <button class="btn btn-success pdel" data-dismiss="modal">Yes</button>
+		    <button class="btn btn-danger" data-dismiss="modal">No</button>
+		    </div>
+		  </div>
+		  </div>
+		</div>
+	  <h2 style="font-family: Space Mono, Arial; text-align: center;">Review Manager</h2> 
+	  {% if not pieces %}
+	  	<h5 class="text-muted" style="margin-top: 40px;text-align: center;">You haven't written a review yet.<a href="{%url 'write_piece'%}" style="text-decoration: none; color: #421c52"> Go write One</a></h5>
+	  {%else%} 
+	  <table class="table table-hover" style="margin-top: 30px;">
+	    <thead>
+	      <tr>
+	        <th>Reveiw</th>
+	        <th>Views</th>
+	        <th>Visibility</th>
+	        <th>Actions</th>
+	        <th></th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	    	{%for piece in pieces%}
+	    	<tr id="{{piece.id}}">
+	    		<td>{{piece.title}}</td>
+	    		<td>{{piece.views}}</td>
+	    		<td> 
+	    		{%if piece.visibility%}
+		    		<div style="display: inline;" class="vis_bool">Public&nbsp;&nbsp;</div> 
+		    		<a href="#" class="visib">
+		    		<i class="material-icons" style="font-size: 18px; color: #2faf28">lightbulb_outline</i></a>
+		    	{%else%}
+		    		<div style="display: inline;" class="vis_bool">Private</div> 
+		    		<a href="#" class="visib">
+		    		<i class="material-icons" style="font-size: 18px; color: #d82020">lightbulb_outline</i></a>
+	    		{%endif%}
+	    		</td>
+	    		<td>
+	    			<div class="dropdown">
+	    			  <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">Action
+	    			  <span class="caret"></span>
+	    			  </button>
+	    			  <ul class="dropdown-menu">
+	    			    <li><a href="{% url 'edit_piece_content' piece_id=piece.id%}">Edit</a></li>
+	    			    <li><a href="#" class="pdel_btn">Delete</a></li>
+	    			    <li><a href="{%url 'read_piece' piece_slug=piece.slug%}">Preview</a></li>
+	    			  </ul> 
+	    			</div>
+	    		</td>
+	    	</tr>
+	      {%endfor%}
+	    </tbody>
+	  </table>
+	  {%endif%}
+	</div>
+
+{%endblock%}
+
+{%block js%}
+<script>
+	$('.visib').click(function(){
+		var link=$(this);
+		var id=$(this).closest('tr').attr('id');
+		$.ajax({
+			type:'POST',
+			url:'/portfolio/change_visib/',
+			data:{'piece_id':id, csrfmiddlewaretoken:'{{csrf_token}}'},
+			dataType:'json',
+			success: function(data){
+				if (data.visib==false){
+					link.siblings('.vis_bool').text('Private');
+					link.find('i').css('color', '#d82020');
+				}
+				else{
+					link.siblings('.vis_bool').html('Public&nbsp;&nbsp;');
+					link.find('i').css('color', '#2faf28');
+				}
+			}
+		});
+		return false;
+	});
+</script>
+<script type="text/javascript">
+
+	$('.pdel_btn').click(function(){
+		var id=$(this).closest('tr').attr('id');
+		var u=$('.modal').attr('name', id);
+		$('.modal').modal();
+		console.log(u.attr('name'));
+	});
+
+	$('.pdel').click(function(){
+		var id=$(this).closest('.modal').attr('name');
+		$.ajax({
+			type:'POST',
+			url:'/portfolio/delete_piece/',
+			data:{'piece_id':id, csrfmiddlewaretoken:'{{csrf_token}}'},
+			dataType:'json',
+			success: function(data) {
+				if (data.done){
+					$('#'+id).hide(200);
+					$('.modal-backdrop').remove();
+					$('body').removeClass('modal-open');					
+				}
+			}
+		});
+
+	});
+
+</script>
+{%endblock%}

@@ -1,0 +1,38 @@
+{%extends base%}
+{%load static%}
+{%block title%}
+	Blumury | {{block.author.username|truncatechars:60}}
+{%endblock%}
+{%block metadesc%}
+	<meta content='text/html; charset=utf-8' http-equiv='Content-Type'/>
+	<meta content="{{block.content}}" name="description">
+{%endblock%}
+{%block body%}
+	{%with blocky as block%}
+		{%include 'writers_block/block.html'%}
+	{%endwith%}
+{%endblock%}
+{%block js%}
+<script type="text/javascript" src="{% static 'js/blocks.js' %}"></script>
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		$('.comment_box').slideDown(200);
+	});
+
+	$('.del_conf').click(function(){
+	  var id="{{blocky.id}}";
+	  console.log(id);
+	  $.ajax({
+	    type:'POST',
+	    url:'/index/delete_block/',
+	    data:{'block_id':id},
+	    dataType:'json',
+	    success: function(data){
+	      window.location.href="/index/"
+	    }
+	  });
+	  return false;
+	});
+</script>
+{%endblock%}
